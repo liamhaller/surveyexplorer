@@ -22,7 +22,7 @@ conditional_mean <- function(data, mean_var, category_var){
     stop(paste(substitute(mean_var), " was not found in dataset:", substitute(data)))
   }
 
-  if(is.na(median_column)){
+  if(is.na(mean_column)){
     stop(paste(substitute(category_var), " was not found in dataset:", substitute(data)))
   }
 
