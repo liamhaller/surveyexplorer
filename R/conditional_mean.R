@@ -14,10 +14,59 @@ conditional_mean <- function(data, mean_var, category_var){
 
   #Which column in the dataset corresponds to the name provided
   #this makes refrenceing the vector easier
-  category_column <- match(category_var, colnames(data))
+  category_column <- tryCatch(
+    {
+      match(category_var, colnames(data))
+      # The return value of `readLines()` is the actual value
+      # that will be returned in case there is no condition
+      # (e.g. warning or error).
+      # You don't need to state the return value via `return()` as code
+      # in the "try" part is not wrapped inside a function (unlike that
+      # for the condition handlers for warnings and error below)
+    },
+    error=function(cond) {
+      message(paste(category_var, "is not a column in ", data))
+      message("Here's the original error message:")
+      message(cond)
+      # Choose a return value in case of error
+      return(NA)
+    },
+    warning=function(cond) {
+      message(paste(category_var, " caused a warning"))
+      message("Here's the original warning message:")
+      message(cond)
+      # Choose a return value in case of warning
+      return(NULL)
+    }
+  )
 
   #column number of the variable we of which we'll take the mean
-  mean_column <- match(mean_var, colnames(data))
+  mean_column <- tryCatch(
+    {
+      match(mean_var, colnames(data))
+      # The return value of `readLines()` is the actual value
+      # that will be returned in case there is no condition
+      # (e.g. warning or error).
+      # You don't need to state the return value via `return()` as code
+      # in the "try" part is not wrapped inside a function (unlike that
+      # for the condition handlers for warnings and error below)
+    },
+    error=function(cond) {
+      message(paste(category_var, "is not a column in ", data))
+      message("Here's the original error message:")
+      message(cond)
+      # Choose a return value in case of error
+      return(NA)
+    },
+    warning=function(cond) {
+      message(paste(category_var, " caused a warning"))
+      message("Here's the original warning message:")
+      message(cond)
+      # Choose a return value in case of warning
+      return(NULL)
+    }
+  )
+
 
   #All of the cateogires across which we will take the mean
   categories <- unique(data[,category_column])
