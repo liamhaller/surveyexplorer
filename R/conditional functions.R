@@ -95,7 +95,7 @@ conditional_mean <- function(data, mean_var, category_var){
 #' @param median_var data that will be used in the calculation of medians
 #' @param category_var The categories across which the function will compute medians
 #' @param data Dataframe that contains both `median_var` and `category_var`
-#'
+#' @importFrom stats median
 #' @return a  dataframe with the means of `median_var` for each level of `category_var`
 #' @export
 #'
