@@ -79,6 +79,9 @@ conditional_mean <- function(data, mean_var, category_var){
   df[,2] <- suppressWarnings(as.numeric(df[,2]))
   df[,2] <- round(df[,2], 3)
 
+  #total column should be numeric
+  df[,3] <- as.numeric(df[,3])
+
   #sort by first column
   df <- df[order(df[,1]),]
 
@@ -169,6 +172,10 @@ conditional_median<- function(data, median_var, category_var){
   #change column to numeric
   df[,2] <- suppressWarnings(as.numeric(df[,2]))
   df[,2] <- round(df[,2], 3)
+
+  #total column should be numeric
+  df[,3] <- as.numeric(df[,3])
+
 
   #sort by first column
   df <- df[order(df[,1]),]
