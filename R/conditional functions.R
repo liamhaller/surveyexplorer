@@ -57,7 +57,7 @@ conditional_mean <- function(data, mean_var, category_var){
     #calculate mean of NA group
     na_mean <- mean(ukr[is.na(ukr[,category_column]),][,mean_column], na.rm = TRUE)
     #calculate sum of NA group (how many NA are in the categorical variable)
-    na_sum <- sum(is.na(data[,category_column]))
+    na_sum <- sum(!is.na(ukr[is.na(ukr[,category_column]),][,mean_column]))
 
     #add NA category metrics to the dataframe
     na_catagory_row <- c("NA", na_mean, na_sum)
@@ -151,7 +151,7 @@ conditional_median<- function(data, median_var, category_var){
     #calculate mean of NA group
     na_median <- median(ukr[is.na(ukr[,category_column]),][,median_column], na.rm = TRUE)
     #calculate sum of NA group (how many NA are in the categorical variable)
-    na_sum <- sum(is.na(data[,category_column]))
+    na_sum <- sum(!is.na(ukr[is.na(ukr[,category_column]),][,median_column]))
 
     #add NA category metrics to the dataframe
     na_catagory_row <- c("NA", na_median, na_sum)
