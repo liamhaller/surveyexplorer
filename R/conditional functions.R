@@ -55,16 +55,16 @@ conditional_mean <- function(data, mean_var, category_var){
   #If category variable contains NA, we want to include it as a category
   if(contains_na > 0){
     #calculate mean of NA group
-    na_mean <- mean(ukr[is.na(ukr[,category_column]),][,mean_column], na.rm = TRUE)
+    na_mean <- mean(data[is.na(data[,category_column]),][,mean_column], na.rm = TRUE)
     #calculate sum of NA group (how many NA are in the categorical variable)
-    na_sum <- sum(!is.na(ukr[is.na(ukr[,category_column]),][,mean_column]))
+    na_sum <- sum(!is.na(data[is.na(data[,category_column]),][,mean_column]))
 
     #add NA category metrics to the dataframe
     na_catagory_row <- c("NA", na_mean, na_sum)
     df <- rbind(df, na_catagory_row)
 
     ##calculated NA that are in both category and the mean variable, that cannot be included
-    na_both <- sum(is.na(ukr[is.na(ukr[,category_column]),][,mean_column]))
+    na_both <- sum(is.na(data[is.na(data[,category_column]),][,mean_column]))
     na_both_row <- c("NA", "NA", na_both)
     df <- rbind(df, na_both_row)
 
@@ -149,16 +149,16 @@ conditional_median<- function(data, median_var, category_var){
   #If category variable contains NA, we want to include it as a category
   if(contains_na > 0){
     #calculate mean of NA group
-    na_median <- median(ukr[is.na(ukr[,category_column]),][,median_column], na.rm = TRUE)
+    na_median <- median(data[is.na(data[,category_column]),][,median_column], na.rm = TRUE)
     #calculate sum of NA group (how many NA are in the categorical variable)
-    na_sum <- sum(!is.na(ukr[is.na(ukr[,category_column]),][,median_column]))
+    na_sum <- sum(!is.na(data[is.na(data[,category_column]),][,median_column]))
 
     #add NA category metrics to the dataframe
     na_catagory_row <- c("NA", na_median, na_sum)
     df <- rbind(df, na_catagory_row)
 
     ##calculated NA that are in both category and the mean variable, that cannot be included
-    na_both <- sum(is.na(ukr[is.na(ukr[,category_column]),][,median_column]))
+    na_both <- sum(is.na(data[is.na(data[,category_column]),][,median_column]))
     na_both_row <- c("NA", "NA", na_both)
     df <- rbind(df, na_both_row)
 
