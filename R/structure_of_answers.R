@@ -95,10 +95,10 @@ structure_categories <- function(dataframe, category_threshold = 20){
 #'
 struct_level <- function(dataframe){
 
-  categories <- structure_categories(dataframe)
+  categorical_variables <- structure_categories(dataframe)
 
   final_list <- list()
-  for(i in 1:length(categories)){
+  for(i in 1:length(categorical_variables)){
 
     final_list[[i]] <-  generate_unique_level_list(dataframe, categorical_variables[[i]])
 
