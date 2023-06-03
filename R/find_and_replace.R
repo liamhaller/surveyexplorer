@@ -63,6 +63,7 @@ stringmatch <- function(check_string, test_string){
 #' @param old_text placeholder
 #' @param new_text placeholder
 #' @importFrom rlang expr parse_expr
+#' @importFrom dplyr mutate case_when
 #' @return dataset with values replaced in selected columns
 #' @export
 #'
