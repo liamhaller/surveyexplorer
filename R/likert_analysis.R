@@ -13,6 +13,9 @@
 
 likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
 
+
+  #maybe add values to exclude
+
   if(class(data) != "data.frame"){
     dataframe <- as.data.frame(data)
     colnames(dataframe) <- c(paste(as.character(substitute(data)))[3])

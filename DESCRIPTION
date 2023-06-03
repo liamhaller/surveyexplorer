@@ -13,4 +13,5 @@ RoxygenNote: 7.2.3
 Imports:
   dplyr,
   rlang,
-  purrr
+  purrr,
+  ggplot2
