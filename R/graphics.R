@@ -17,9 +17,7 @@ dezim_style <- function(title_size = 16, x_axis_title_size = 14,
   theme(
     ### Text ###
     #Title
-    plot.title = element_text(size = title_size),
-    plot.title = element_text(color = "#154a39"),
-
+    plot.title = element_text(size = title_size, color = "#154a39"),
 
     #Axis text
     axis.title.x = element_text(size = x_axis_title_size, color = "#154a39"),
