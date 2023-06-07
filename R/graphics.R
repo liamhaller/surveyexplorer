@@ -22,14 +22,10 @@ dezim_style <- function(title_size = 16, x_axis_title_size = 14,
 
 
     #Axis text
-    axis.title.x = element_text(size = x_axis_title_size),
-    axis.title.x = element_text(color = "#154a39"),
-    axis.text.x = element_text(size = x_axis_text_size),
-    axis.text.x = element_text(color = "#154a39"),
-    axis.title.y = element_text(size = y_axis_title_size),
-    axis.title.y = element_text(color = "#154a39"),
-    axis.text.y = element_text(size = y_axis_text_size),
-    axis.text.y = element_text(color = "#154a39"),
+    axis.title.x = element_text(size = x_axis_title_size, color = "#154a39"),
+    axis.text.x = element_text(size = x_axis_text_size, color = "#154a39"),
+    axis.title.y = element_text(size = y_axis_title_size, color = "#154a39"),
+    axis.text.y = element_text(size = y_axis_text_size, color = "#154a39"),
 
     ### Legend ###
     legend.text= element_text(color = "#154a39"),
