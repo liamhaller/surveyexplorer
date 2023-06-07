@@ -71,17 +71,20 @@ Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
 
   #check old tex == new text length
 
-  base_expression <- expr('dataframe %>% mutate(across(columns_to_replace, ~case_when(')
+  base_expression <- rlang::expr('dataframe %>% mutate(across(columns_to_replace, ~case_when(')
 
   argument_string <- c()
   for(i in seq_along(old_text)){
 
     if(i == length(old_text)){
       #version without comma
-      argument_element <- paste0('. == ', paste0("'",old_text[i],"'"),' ~ ', new_text[i])
+
+      #argument_element <- paste0('. == ', paste0("'",old_text[i],"'"),' ~ ', new_text[i])
+      argument_element <- paste0('. == ', old_text[i] , ' ~ ', new_text[i])
+
 
     } else{
-      argument_element <- paste0('. == ',  paste0("'",old_text[i],"'"),' ~ ', new_text[i], ',')
+      argument_element <- paste0('. == ', old_text[i] ,' ~ ', new_text[i], ',')
     }
 
     argument_string <- paste0(argument_string, argument_element)
