@@ -87,7 +87,7 @@ Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
     #Character inputs need to be wrapped in commas or else they will be recognized as objects
     #by the Dplyr processing
     old_text_input <- ifelse(old_text_character, paste0("'",old_text[i],"'"),old_text[i])
-    new_text_input <- ifelse(old_text_character, paste0("'",old_text[i],"'"),old_text[i])
+    new_text_input <- ifelse(new_text_character, paste0("'",new_text[i],"'"),new_text[i])
 
     #On the last run of the loop, the final symbol does not include a comma
     if(i == length(old_text)){
