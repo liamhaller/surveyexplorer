@@ -18,9 +18,19 @@ structure_answers <- function(dataframe, category_threshold = 20){
 
   #decompose class == character into unstructured and categorical
   n_unique_response <- sapply(df_char, function(x) length(unique(x)))
+
   qual_columns <- which(unname(n_unique_response) > category_threshold)
-  df_qual <- df_char[,qual_columns]
-  df_cat <- df_char[,-qual_columns]
+  if(length(qual_columns) > 0){
+    df_qual <- df_char[,qual_columns]
+    df_cat <- df_char[,-qual_columns]
+    } else {
+    #if no cols have > category_threshold unique answers set all to be df_cat
+    df_cat <- df_char
+    df_qual <- df_char[,qual_columns]
+  }
+
+
+
 
   #get counts of each
   unstructured_count <- NCOL(df_qual)
