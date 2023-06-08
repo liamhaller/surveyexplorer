@@ -19,11 +19,11 @@ conditional_mean <- function(data, mean_var, category_var){
   mean_column <- match(mean_var, colnames(data))
 
   if(is.na(category_column)){
-    stop(paste(substitute(mean_var), " was not found in dataset:", substitute(data)))
+    stop(paste(substitute(category_var), " was not found in dataset:", substitute(data)))
   }
 
   if(is.na(mean_column)){
-    stop(paste(substitute(category_var), " was not found in dataset:", substitute(data)))
+    stop(paste(substitute(mean_var), " was not found in dataset:", substitute(data)))
   }
 
 
