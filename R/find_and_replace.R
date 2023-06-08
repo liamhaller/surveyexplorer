@@ -79,6 +79,9 @@ Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
   #Check to see if each (or maybe at least one) element of old_text
   #is contained within the col to replace
 
+  #TODO
+  #there's an issue if you want to replace just one element and leave the rest the same
+
   #save whether vectors are characters to use for processing during input
   old_text_character <- is.character(old_text)
   new_text_character <- is.character(new_text)
