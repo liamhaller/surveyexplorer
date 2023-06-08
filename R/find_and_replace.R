@@ -69,31 +69,37 @@ stringmatch <- function(check_string, test_string){
 #'
 Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
 
-  #check old tex == new text length
+  ##Checks & info
+  #ensure vector lengths are teh same
+  if(length(old_text) != length(new_text)){
+    stop("Length of old_text and new_text must be equal")
+  }
+
+  #save whether vectors are characters to use for processing during input
+  old_text_character <- is.character(old_text)
+  new_text_character <- is.character(new_text)
+
 
   base_expression <- rlang::expr('dataframe %>% mutate(across(columns_to_replace, ~case_when(')
-
   argument_string <- c()
   for(i in seq_along(old_text)){
 
+    #Character inputs need to be wrapped in commas or else they will be recognized as objects
+    #by the Dplyr processing
+    old_text_input <- ifelse(old_text_character, paste0("'",old_text[i],"'"),old_text[i])
+    new_text_input <- ifelse(old_text_character, paste0("'",old_text[i],"'"),old_text[i])
+
+    #On the last run of the loop, the final symbol does not include a comma
     if(i == length(old_text)){
-      #version without comma
-
-      #argument_element <- paste0('. == ', paste0("'",old_text[i],"'"),' ~ ', new_text[i])
-      argument_element <- paste0('. == ', old_text[i] , ' ~ ', new_text[i])
-
-
-    } else{
-      argument_element <- paste0('. == ', old_text[i] ,' ~ ', new_text[i], ',')
+      argument_element <- paste0('. == ', old_text_input, ' ~ ', new_text_input)
+    } else {
+      argument_element <- paste0('. == ', old_text_input ,' ~ ', new_text_input, ',')
     }
-
     argument_string <- paste0(argument_string, argument_element)
-
-
   }
+
 
   expression <- paste0(base_expression, argument_string, ')))')
   eval(parse_expr(expression))
-
 }
 
