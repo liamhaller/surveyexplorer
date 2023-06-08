@@ -69,11 +69,15 @@ stringmatch <- function(check_string, test_string){
 #'
 Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
 
-  ##Checks & info
+  ##Checks ##
   #ensure vector lengths are teh same
   if(length(old_text) != length(new_text)){
     stop("Length of old_text and new_text must be equal")
   }
+
+  #TODO
+  #Check to see if each (or maybe at least one) element of old_text
+  #is contained within the col to replace
 
   #save whether vectors are characters to use for processing during input
   old_text_character <- is.character(old_text)

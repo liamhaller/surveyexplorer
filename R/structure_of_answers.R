@@ -50,8 +50,16 @@ structure_categories <- function(dataframe, category_threshold = 20){
   df_char <- dataframe[,sapply(dataframe, class) == 'character']
   #decompose class == character into unstructured and categorical
   n_unique_response <- sapply(df_char, function(x) length(unique(x)))
+
+  #Remove qual columns that have greater than category_threshold unique answers
+  #since they are likely unstructured data
   qual_columns <- which(unname(n_unique_response) > category_threshold)
-  df_cat <- df_char[,-qual_columns]
+  if(length(qual_columns) > 0){
+    df_cat <- df_char[,-qual_columns]
+  } else {
+    #if no cols have > category_threshold unique answers set all to be df_cat
+    df_cat <- df_char
+  }
 
   #Get dataframe of all category column by total unique levels
   categories <- df_cat %>% sapply(unique) %>%  lapply(length) %>% unlist %>% as.data.frame
