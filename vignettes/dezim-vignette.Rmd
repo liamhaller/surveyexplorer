@@ -35,5 +35,14 @@ A frequent problem encountered while cleaning survey data is
 
 ```{r}
 
+structure_answers(berlinbears)
 
+```
+
+```{r}
+structure_categories(berlinbears)
+```
+
+```{r}
+dezim::struct_level(berlinbears)
 ```
