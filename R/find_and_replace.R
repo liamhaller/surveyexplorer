@@ -54,7 +54,6 @@ stringmatch <- function(check_string, test_string){
 }
 
 
-
 #' Zreplace
 #' Replace a given string with a new string in selected columns
 #'
@@ -66,6 +65,7 @@ stringmatch <- function(check_string, test_string){
 #' @importFrom dplyr mutate case_when
 #' @return dataset with values replaced in selected columns
 #' @export
+#'
 #'
 Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
 

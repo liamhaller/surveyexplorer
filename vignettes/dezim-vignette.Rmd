@@ -1,0 +1,39 @@
+---
+title: "DeZIM R Package Vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DeZIM R Package Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(dezim)
+```
+
+```{r eval=FALSE}
+devtools::install_github("liamhaller/dezim", ref = "main", force = TRUE)
+```
+
+```{r}
+head(dezim::berlinbears)
+
+```
+
+## Clean & Wrangle Data
+
+#### Understanding the structure of your data
+
+A frequent problem encountered while cleaning survey data is
+
+```{r}
+
+
+```
