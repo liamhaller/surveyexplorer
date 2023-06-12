@@ -21,7 +21,7 @@ likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
 
   if(class(data) != "data.frame"){
     dataframe <- as.data.frame(data)
-    colnames(dataframe) <- paste0("'",(substitute(data)),"'")
+    colnames(dataframe) <- c(quote(data))
 
   } else {
     dataframe <- data
