@@ -42,6 +42,9 @@ Zfind <- function(dataframe, answer_pattern, categorical_only = TRUE, column_nam
 }
 
 
+
+
+
 #' Zstructure
 #'
 #' @param dataframe later

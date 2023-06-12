@@ -103,7 +103,6 @@ structure_categories <- function(dataframe, category_threshold = 20){
 }
 
 
-
 #' Get structure of answer levels
 #'
 #' @param dataframe .
@@ -127,35 +126,6 @@ struct_level <- function(dataframe){
 
 }
 
-
-
-#' Zstructure
-#'
-#' @param dataframe later
-#' @param mode later
-#' @param category_threshold later
-#'
-#' @return later
-#' @export
-#'
-Zstructure <- function(dataframe, mode, category_threshold = 20){
-
-
-  if(mode == "questions"){
-    return(structure_categories(dataframe, category_threshold = category_threshold))
-
-  } else if(mode == "answers") {
-    return(struct_level(dataframe))
-
-
-  } else {
-
-    stop("mode must either be 'questions' or 'answers'")
-
-  }
-
-
-}
 
 
 
