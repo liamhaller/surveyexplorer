@@ -2,6 +2,7 @@
 
 export(Zfind)
 export(Zreplace)
+export(Zstructure)
 export(conditional_mean)
 export(conditional_median)
 export(dezim_style)
