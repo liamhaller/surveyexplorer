@@ -14,6 +14,9 @@
 likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
 
 
+  if(is.null(data)){
+    stop("Data entered is NULL, please check it is a valid vector or dataframe")
+  }
   #maybe add values to exclude
 
   if(class(data) != "data.frame"){
