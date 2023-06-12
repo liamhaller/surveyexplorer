@@ -15,6 +15,16 @@ untibbled <- function(tibblecolumn){
 
 
 
+#' Stringmatch
+#'
+#' @param check_string placeholder
+#' @param test_string placeholder
+#'
+#' @return placeholder
+#'
+stringmatch <- function(check_string, test_string){
+  return(all(test_string %in% check_string))
+}
 
 
 

@@ -42,16 +42,41 @@ Zfind <- function(dataframe, answer_pattern, categorical_only = TRUE, column_nam
 }
 
 
-#' Stringmatch
+#' Zstructure
 #'
-#' @param check_string placeholder
-#' @param test_string placeholder
+#' @param dataframe later
+#' @param mode later
+#' @param category_threshold later
 #'
-#' @return placeholder
+#' @return later
+#' @export
 #'
-stringmatch <- function(check_string, test_string){
-  return(all(test_string %in% check_string))
+Zstructure <- function(dataframe, mode, category_threshold = 20){
+
+  if(mode == "questions"){
+    return(structure_categories(dataframe, category_threshold = category_threshold))
+
+  } else if(mode == "answers") {
+    return(struct_level(dataframe))
+
+
+  } else {
+
+    stop("mode must either be 'questions' or 'answers'")
+
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 #' Zreplace
@@ -109,4 +134,8 @@ Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
   expression <- paste0(base_expression, argument_string, ')))')
   eval(parse_expr(expression))
 }
+
+
+
+
 
