@@ -46,6 +46,13 @@ likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
   out <- as.data.frame(out)
   rownames(out) <- question_names
 
+  #order the columns of out according to name
+  #!! no issue if they're numbers, (1-n), but could
+  #produce unintended consequences if the name of variables
+  #in that case will need to match to function
+  #see https://stackoverflow.com/questions/7334644/sort-columns-of-a-dataframe-by-column-name
+  out <- out[ , order(names(out))]
+
   #Reverse order of columns if high_to_low is true
   if(high_to_low == TRUE){
     out <- rev(out)
@@ -61,3 +68,13 @@ likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
 
   return(out)
 }
+
+
+#When likert graph prep gets added,
+#make sure to add checks for the structure of the data
+
+
+
+
+
+

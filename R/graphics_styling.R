@@ -9,7 +9,7 @@
 #' @return No return, just a theme to add to ggplotfiles
 #' @export
 #'
-dezim_style <- function(title_size = 16, x_axis_title_size = 14,
+dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size = 14,
                         y_axis_title_size = 14, x_axis_text_size = 12,
                         y_axis_text_size = 12){
 
@@ -18,12 +18,13 @@ dezim_style <- function(title_size = 16, x_axis_title_size = 14,
     ### Text ###
     #Title
     plot.title = element_text(size = title_size, color = "#154a39"),
+    plot.subtitle = element_text(size = sub_title_size, color = "#154a39"),
+    plot.caption = element_text(color = "#154a39"),
 
     #Axis text
     axis.title.x = element_text(size = x_axis_title_size, color = "#154a39"),
     axis.text.x = element_text(size = x_axis_text_size, color = "#154a39"),
     axis.title.y = element_text(size = y_axis_title_size, color = "#154a39"),
-    axis.text.y = element_text(size = y_axis_text_size, color = "#154a39"),
 
     ### Legend ###
     legend.text= element_text(color = "#154a39"),
