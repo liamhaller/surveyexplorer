@@ -5,8 +5,8 @@
 #' @param category_threshold The number of unique answers to a question above which it is considered unstructured
 #' @importFrom dplyr %>%
 #' @return a dataframe indicating how many questions are an integer, numeric, logical, unstructured, or categorical
-#' @export
 #'
+#' @export
 structure_answers <- function(dataframe, category_threshold = 20){
 
   #calculate number of variables that have each structure
@@ -53,8 +53,8 @@ structure_answers <- function(dataframe, category_threshold = 20){
 
 #'
 #' @return a list grouped by how many unique answers each variable has
-#' @export
 #'
+#' @export
 structure_categories <- function(dataframe, category_threshold = 20){
 
   df_char <- dataframe[,sapply(dataframe, class) == 'character']
@@ -108,8 +108,8 @@ structure_categories <- function(dataframe, category_threshold = 20){
 #' @param dataframe .
 #'
 #' @return .
-#' @export
 #'
+#' @export
 struct_level <- function(dataframe){
 
   categorical_variables <- structure_categories(dataframe)
