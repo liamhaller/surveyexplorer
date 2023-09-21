@@ -75,32 +75,3 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
 
 
 
-
-sysfonts::font_add(family = "Calibri",
-                   regular = list.files(path = Calibri$path,
-                                        pattern = "Calibri.ttf",
-                                        full.names = TRUE))
-
-Calibri <- list_of_fonts[list_of_fonts$file == "calibri.ttf",]
-
-list.files(path = Calibri$path,
-           pattern = "Calibri.ttf",
-           full.names = TRUE)
-
-
-
-fonts <- sysfonts::font_files()
-print(as_tibble(list_of_fonts), n = 361)
-sysfonts::font_add_google("Overpass", family = 'overpass')
-sysfonts::font_add_google("Overpass Mono", family = 'overpass-mono')
-?sysfonts::font_add()
-#sysfonts::font_add()
-
-sysfonts::font_families()
-
-
-extrafont::font_import(paths = "/Library/Fonts", pattern = "calibri.ttf")
-
-
-fonts <- as.data.frame(sysfonts::font_files())
-grep(pattern = "Calibri", x = fonts$family, ignore.case = TRUE, value = TRUE)
