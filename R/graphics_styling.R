@@ -13,6 +13,7 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
                         y_axis_title_size = 14, x_axis_text_size = 12,
                         y_axis_text_size = 12){
 
+  require(ggplot2)
 
   # dezim_colors <- c("#D9AB11", "#2F5D47", "#8C9981", "#EED394","#D57F43",
   #                   "#EBBA8B", "#973B3A", "#C38878", "#2E6B75")
@@ -59,7 +60,7 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
     legend.position = "bottom",
 
     ### Design ###
-    panel.border = element_rect(colour = "#154a39", fill=NA, size=0.5),
+    panel.border = element_rect(color = "#154a39", fill=NA, size=1),
     plot.background = element_rect(fill = '#EAEDEC'),
     axis.ticks = element_line(color = "#154a39"),
     panel.grid.major=element_line(color="#D3D3D3"),
