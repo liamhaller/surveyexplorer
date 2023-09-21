@@ -14,9 +14,9 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
                         y_axis_text_size = 12){
 
 
-  dezim_colors <- c("#D9AB11", "#2F5D47", "#8C9981", "#EED394","#D57F43",
-                    "#EBBA8B", "#973B3A", "#C38878", "#2E6B75")
-
+  # dezim_colors <- c("#D9AB11", "#2F5D47", "#8C9981", "#EED394","#D57F43",
+  #                   "#EBBA8B", "#973B3A", "#C38878", "#2E6B75")
+  #
 
 
   #Check for Calibri font
@@ -51,11 +51,6 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
     axis.text.x = element_text(size = x_axis_text_size, color = "#154a39", family = 'calibri'),
     axis.title.y = element_text(size = y_axis_title_size, color = "#154a39", family = 'calibri'),
     axis.text.y = element_text(size = y_axis_text_size, color = "#154a39", family = 'calibri'),
-
-
-    #colors
-    scale_color_manual(values = dezim_colors),
-    scale_fill_manual(values = dezim_colors),
 
     ### Legend ###
     legend.text= element_text(color = "#154a39"),
