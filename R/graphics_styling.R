@@ -20,38 +20,36 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
   #
 
 
-  #Check for Calibri font
-  if (!require(showtext)) install.packages("showtext")
-  #> Loading required package: showtext
-  #> Loading required package: sysfonts
-  #> Loading required package: showtextdb
-  library(showtext)
-  list_of_fonts <- as.data.frame(font_files())
-  if(any(grepl("Calibri.ttf", list_of_fonts, ignore.case = TRUE))){
-    Calibri <- list_of_fonts[list_of_fonts$file == "calibri.ttf",] #this is case sensitive on my machine
-    sysfonts::font_add(family = "calibri",
-                       regular = list.files(path = Calibri$path,
-                                            pattern = "calibri.ttf", #this is case sensitive on my machine
-                                            full.names = TRUE))
-    print("Calibri available")
-  } else{
-    stop("The Calibri font is not installed on your machine, please install it and try again")
-  }
-
+    #Check for Calibri font
+    if (!require(showtext)) install.packages("showtext")
+    #> Loading required package: showtext
+    #> Loading required package: sysfonts
+    #> Loading required package: showtextdb
+    library(showtext)
+    list_of_fonts <- as.data.frame(font_files())
+    if(any(grepl("Calibri.ttf", list_of_fonts, ignore.case = TRUE))){
+      Calibri <- list_of_fonts[list_of_fonts$file == "calibri.ttf",]
+      sysfonts::font_add(family = Calibri[,3],
+                         regular = list.files(path = Calibri$path,
+                                              pattern = Calibri[,2],
+                                              full.names = TRUE))
+    } else{
+      stop("The Calibri font is not installed on your machine, please install it and try again")
+    }
 
 
   theme(
     ### Text ###
     #Title
-    plot.title = element_text(size = title_size, color = "#154a39", family = "calibri", face = 'bold'),
-    plot.subtitle = element_text(size = sub_title_size, color = "#154a39",  family = "overpass"),
+    plot.title = element_text(size = title_size, color = "#154a39", family = "Calibri"),
+    plot.subtitle = element_text(size = sub_title_size, color = "#154a39"),
     plot.caption = element_text(color = "#154a39"),
 
     #Axis text
-    axis.title.x = element_text(size = x_axis_title_size, color = "#154a39", family = 'calibri'),
-    axis.text.x = element_text(size = x_axis_text_size, color = "#154a39", family = 'calibri'),
-    axis.title.y = element_text(size = y_axis_title_size, color = "#154a39", family = 'calibri'),
-    axis.text.y = element_text(size = y_axis_text_size, color = "#154a39", family = 'calibri'),
+    axis.title.x = element_text(size = x_axis_title_size, color = "#154a39", family = 'Calibri'),
+    axis.text.x = element_text(size = x_axis_text_size, color = "#154a39", family = 'Calibri'),
+    axis.title.y = element_text(size = y_axis_title_size, color = "#154a39", family = 'Calibri'),
+    axis.text.y = element_text(size = y_axis_text_size, color = "#154a39", family = 'Calibri'),
 
     ### Legend ###
     legend.text= element_text(color = "#154a39"),
@@ -60,8 +58,7 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
     legend.position = "bottom",
 
     ### Design ###
-    panel.border = element_rect(color = "#154a39", fill=NA, size=1),
-    plot.background = element_rect(fill = '#EAEDEC'),
+    plot.background = element_rect(fill = '#EAEDEC', colour = "#154a39"),
     axis.ticks = element_line(color = "#154a39"),
     panel.grid.major=element_line(color="#D3D3D3"),
     panel.grid.minor=element_line("#D3D3D3"))
