@@ -40,26 +40,29 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
 
   theme(
     ### Text ###
+    #154a39
+    #4d4d4d
     #Title
     plot.title = element_text(size = title_size, color = "#154a39", family = "Calibri"),
     plot.subtitle = element_text(size = sub_title_size, color = "#154a39"),
     plot.caption = element_text(color = "#154a39"),
 
     #Axis text
-    axis.title.x = element_text(size = x_axis_title_size, color = "#154a39", family = 'Calibri'),
-    axis.text.x = element_text(size = x_axis_text_size, color = "#154a39", family = 'Calibri'),
-    axis.title.y = element_text(size = y_axis_title_size, color = "#154a39", family = 'Calibri'),
-    axis.text.y = element_text(size = y_axis_text_size, color = "#154a39", family = 'Calibri'),
+    axis.title.x = element_text(size = x_axis_title_size, color = "#4d4d4d", family = 'Calibri'),
+    axis.text.x = element_text(size = x_axis_text_size, color = "#4d4d4d", family = 'Calibri'),
+    axis.title.y = element_text(size = y_axis_title_size, color = "#4d4d4d", family = 'Calibri'),
+    axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d", family = 'Calibri'),
 
     ### Legend ###
-    legend.text= element_text(color = "#154a39"),
-    legend.title = element_text(color = "#154a39"),
+    legend.text= element_text(color = "#4d4d4d"),
+    legend.title = element_text(color = "#4d4d4d"),
     legend.background = element_rect(fill = '#EAEDEC'),
+    legend.key = element_rect(fill = "#EAEDEC"),
     legend.position = "bottom",
 
     ### Design ###
     plot.background = element_rect(fill = '#EAEDEC', colour = "#154a39"),
-    axis.ticks = element_line(color = "#154a39"),
+    axis.ticks = element_line(color = "#4d4d4d"),
     panel.grid.major=element_line(color="#D3D3D3"),
     panel.grid.minor=element_line("#D3D3D3"))
 
