@@ -66,6 +66,9 @@ likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
   #Round output and add rownames
   out <- round(out, 2)
 
+  #data is in class = table, transform to numeric
+  out <- sapply(out, function(x) as.numeric(x))
+
   return(out)
 }
 
