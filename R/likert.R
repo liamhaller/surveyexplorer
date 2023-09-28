@@ -2,8 +2,8 @@
 #' Summarize likert data
 #'
 #' @param data either a dataframe or a vector of likert data
-#' @param low_is_agree If 1 is agree/strongly agree
-#' @param order_rows If true rows will be ordered by largest to smallest
+#' @param low_is_agree Set true if 1 is agree/strongly agree so order will be disagree to agree
+#' @param order_rows If true rows will be ordered by decreasing strongly agree values
 #'
 #' @return A dataframe of percentages corresponding to the share of each category
 #' @importFrom purrr map_df
