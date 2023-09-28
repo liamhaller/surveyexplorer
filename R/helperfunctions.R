@@ -66,7 +66,7 @@ generate_unique_level_list <- function(dataframe, column_names){
       #Does the answer levels in the table(answer_levels) which contains all possible for each grou
       #match the uniqe level that is rotated by the forloop, if yes it should be included in the list
       string_match <- purrr::map_df(answer_levels, function(x) {
-        dezim:::stringmatch(check_string = untibbled(unique_answer_levels[,i]), untibbled(x))
+        stringmatch(check_string = untibbled(unique_answer_levels[,i]), untibbled(x))
       })
 
       #a boolean vector of which columns matched the given string
