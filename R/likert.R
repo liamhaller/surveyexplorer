@@ -2,7 +2,7 @@
 #' Summarize likert data
 #'
 #' @param data either a dataframe or a vector of likert data
-#' @param high_to_low If true, the highest numbers will appear in the first column
+#' @param low_is_agree If 1 is agree/strongly agree
 #' @param order_rows If true rows will be ordered by largest to smallest
 #'
 #' @return A dataframe of percentages corresponding to the share of each category
