@@ -8,6 +8,7 @@
 #' @param x_axis_text_size size of x axis text
 #' @param y_axis_text_size size of y axis text
 #' @import ggplot2
+#' @importFrom sysfonts font_files font_add
 #' @return No return, just a theme to add to ggplotfiles
 #' @export
 #'
@@ -20,13 +21,7 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
 
   if(calibri == TRUE){
 
-    #Check for Calibri font
-    if (!require(showtext)) install.packages("showtext")
-    #> Loading required package: showtext
-    #> Loading required package: sysfonts
-    #> Loading required package: showtextdb
-    library(showtext)
-    list_of_fonts <- as.data.frame(font_files())
+    list_of_fonts <- as.data.frame(sysfonts::font_files())
     if(any(grepl("Calibri.ttf", list_of_fonts, ignore.case = TRUE))){
       Calibri <- list_of_fonts[list_of_fonts$file == "calibri.ttf",]
       sysfonts::font_add(family = Calibri[,3],
