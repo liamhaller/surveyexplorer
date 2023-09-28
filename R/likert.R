@@ -54,7 +54,7 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
   out <- out[ , order(names(out))]
 
   #Reverse order of columns if lower numbers mean strongly agree
-  if(high_to_low == TRUE){
+  if(low_is_agree == TRUE){
     out <- rev(out)
   }
 
