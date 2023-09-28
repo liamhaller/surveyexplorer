@@ -18,7 +18,7 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
 
 
 
-  if(calibri = TRUE){
+  if(calibri == TRUE){
 
     #Check for Calibri font
     if (!require(showtext)) install.packages("showtext")
