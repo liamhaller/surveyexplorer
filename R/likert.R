@@ -7,6 +7,7 @@
 #'
 #' @return A dataframe of percentages corresponding to the share of each category
 #' @importFrom purrr map_df
+#' @importFrom tibble rownames_to_column
 #'
 #' @export
 #'

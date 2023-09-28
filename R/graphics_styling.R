@@ -17,8 +17,6 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
                         y_axis_text_size = 12){
 
 
-
-
   if(calibri == TRUE){
 
     list_of_fonts <- as.data.frame(sysfonts::font_files())
@@ -68,15 +66,15 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
       #154a39
       #4d4d4d
       #Title
-      plot.title = element_text(size = title_size, color = "#154a39", family = "Calibri"),
+      plot.title = element_text(size = title_size, color = "#154a39"),
       plot.subtitle = element_text(size = sub_title_size, color = "#154a39"),
       plot.caption = element_text(color = "#154a39"),
 
       #Axis text
-      axis.title.x = element_text(size = x_axis_title_size, color = "#4d4d4d", family = 'Calibri'),
-      axis.text.x = element_text(size = x_axis_text_size, color = "#4d4d4d", family = 'Calibri'),
-      axis.title.y = element_text(size = y_axis_title_size, color = "#4d4d4d", family = 'Calibri'),
-      axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d", family = 'Calibri'),
+      axis.title.x = element_text(size = x_axis_title_size, color = "#4d4d4d"),
+      axis.text.x = element_text(size = x_axis_text_size, color = "#4d4d4d"),
+      axis.title.y = element_text(size = y_axis_title_size, color = "#4d4d4d"),
+      axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d"),
 
       ### Legend ###
       legend.text= element_text(color = "#4d4d4d"),
