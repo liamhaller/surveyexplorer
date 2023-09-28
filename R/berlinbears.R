@@ -4,13 +4,16 @@
 #' Report ...
 #'
 #' @format ## `berlinbears`
-#' A data frame with 1000 rows and 8 columns:
+#' A data frame with 500 rows and 22 columns describing bears and thier prefrences:
 #' \describe{
 #'   \item{species}{name of species}
-#'   \item{gender}{gender of bear}
-#'   \item{weight}{weight of bear in kg}
-#'   \item{favorite_food, favorite_fruit}{survey questions}
-#'   \item{likert1, likert2, likert3}{example of likert questions}
+#'   \item{genus}{genus that the species belongs to}
+#'   \item{gender}{gender ofthe bear}
+#'   \item{age}{age of the bear}
+#'   \item{will_eat.SQ001, will_eat.SQ002, will_eat.SQ003, will_eat.SQ004, will_eat.SQ005 }{survey questions on foods the bear will eat}
+#'   \item{p_likespine, p_likeshoney, p_eatstrash, p_swims, p_hibernates,p_likes_zoo}{example of likert questions}
 #'   ...
 #' }
 "berlinbears"
+
+

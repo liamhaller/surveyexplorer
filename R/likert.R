@@ -11,7 +11,7 @@
 #' @export
 #'
 
-likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
+likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
 
 
   if(is.null(data)){
@@ -53,7 +53,7 @@ likert_summary <- function(data, high_to_low = TRUE, order_rows = FALSE){
   #see https://stackoverflow.com/questions/7334644/sort-columns-of-a-dataframe-by-column-name
   out <- out[ , order(names(out))]
 
-  #Reverse order of columns if high_to_low is true
+  #Reverse order of columns if lower numbers mean strongly agree
   if(high_to_low == TRUE){
     out <- rev(out)
   }
