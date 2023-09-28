@@ -15,7 +15,9 @@
 #'
 #' @import ggplot2
 #' @import dplyr
+#' @importFrom scales percent
 #' @importFrom rlang ensym
+#' @importFrom stringr str_wrap
 #'
 singlechoice_graph <- function(dataset, question, subgroup = NULL, levels_to_exclude = NULL){
 
