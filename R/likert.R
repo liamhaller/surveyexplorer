@@ -84,5 +84,93 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
 
 
 
+#' Quickly plot likert data (3,5,7,9 levels)
+#'
+#' @param data
+#' @param levels
+#' @param colors
+#'
+#' @return
+#' @export
+#'
+likert_graph <- function(data, levels = c("Strongly disagree", 'Disagree','Neutral','Agree','Strongly agre'),
+                         colors =  c("#d73027","#E36A64","#FEEBD7", "#8ECF8C", "#66bd63")){
+
+
+  #TODO
+  #check if number of colors is same as number of levels
+
+  numlevels <- length(levels)
+
+  colnames(data) <- c('Item', labels)
+
+  #Split the middle column in half in the graph
+  #dentify the center column, incluidng the first column
+  center<-ceiling(NCOL(data)/2)+1
+
+  #Replace middle column with values split in half and name columns
+  namecenter <- colnames(data[numcenter])
+
+  data <- data %>%
+    mutate(midhigh = data[, numcenter] / 2, .after = all_of(namecenter)) %>%
+    mutate(midlow = data[, numcenter] / 2, .after = all_of(namecenter)) %>%
+    select(-all_of(namecenter))
+
+
+  ##computer lower and upper bound of x axis on graph
+  midlow <- match('midlow', colnames(data))
+  lower_bound <- ceiling(max(rowSums(data[,2:midlow]))) *-100
+  upper_bound <- ceiling(max(rowSums(data[,midlow:NCOL(data)])))*100
+
+
+  #Prep data for graphing format
+  data <- data %>%
+    pivot_longer(2:NCOL(.), names_to = 'level')
+
+  #multiply 'negitive' leveles by -1
+  negitive_levels <- c(labels[1:ceiling(numlevels/2)], "midlow")
+  data$value <- ifelse(data$level %in% negitive_levels,
+                       data$value*-100, data$value*100 )
+
+
+  ##Create fill column for the graph (must double middle color)
+  colorcenter <- colors[numcenter-1]   #subtract one since color palette dosn't include extra label column
+  doublemiddle_colors <- colors %>% as_tibble() %>%
+    #insert before since numcenter includes quesetion column
+    add_row(value = colorcenter, .before = numcenter) %>%
+    pull(1)
+  #add colum to dataframe
+  data$colorslabel <- rep(doublemiddle_colors,
+                          NROW(data)/length(doublemiddle_colors))
+
+
+  #set order for x axis
+  row_order <- data %>%
+    filter(level ==  labels[length(labels)]) %>%
+    arrange(-value) %>%
+    pull(1) %>%
+    as.character %>%
+    rev
+
+  graph.likert <- ggplot() +
+    geom_bar(data=data, aes(x = factor(Item, levels = row_order), y=value, fill = colorslabel),
+             position="stack", stat="identity") +
+    geom_hline(yintercept = 0, linewidth = 2, color =c("white")) +
+    scale_fill_manual(values = colors, labels = labels, breaks = colors) +
+    scale_y_continuous(breaks=seq(lower_bound ,upper_bound,25),
+                       limits=c(lower_bound,upper_bound),
+                       labels = abs(seq(lower_bound, upper_bound, 25))) +
+    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) +
+    coord_flip() +
+    labs(title = "",
+         subtitle = "",
+         x = "",
+         y = "",
+         fill = "")
+
+  return(graph.likert)
+
+}
+
 
 
