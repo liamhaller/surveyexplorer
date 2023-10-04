@@ -86,11 +86,11 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
 
 #' Quickly plot likert data (3,5,7,9 levels)
 #'
-#' @param data
-#' @param levels
-#' @param colors
+#' @param data Summerized likert data (first column must be names)
+#' @param levels example text
+#' @param colors example text
 #'
-#' @return
+#' @return example return
 #' @export
 #'
 likert_graph <- function(data, levels = c("Strongly disagree", 'Disagree','Neutral','Agree','Strongly agre'),
