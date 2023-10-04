@@ -93,20 +93,20 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
 #' @return example return
 #' @export
 #'
-likert_graph <- function(data, levels = c("Strongly disagree", 'Disagree','Neutral','Agree','Strongly agre'),
+likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutral','Agree','Strongly agre'),
                          colors =  c("#d73027","#E36A64","#FEEBD7", "#8ECF8C", "#66bd63")){
 
 
   #TODO
   #check if number of colors is same as number of levels
 
-  numlevels <- length(levels)
+  numlabels <- length(labels)
 
   colnames(data) <- c('Item', labels)
 
   #Split the middle column in half in the graph
   #dentify the center column, incluidng the first column
-  center<-ceiling(NCOL(data)/2)+1
+  numcenter<-ceiling(NCOL(data)/2)+1
 
   #Replace middle column with values split in half and name columns
   namecenter <- colnames(data[numcenter])
@@ -128,7 +128,7 @@ likert_graph <- function(data, levels = c("Strongly disagree", 'Disagree','Neutr
     pivot_longer(2:NCOL(.), names_to = 'level')
 
   #multiply 'negitive' leveles by -1
-  negitive_levels <- c(labels[1:ceiling(numlevels/2)], "midlow")
+  negitive_levels <- c(labels[1:ceiling(numlabels/2)], "midlow")
   data$value <- ifelse(data$level %in% negitive_levels,
                        data$value*-100, data$value*100 )
 
