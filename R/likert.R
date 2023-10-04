@@ -129,19 +129,23 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
 
   #multiply 'negitive' leveles by -1
   negitive_levels <- c(labels[1:ceiling(numlabels/2)], "midlow")
+  positive_levels <- c(labels[numcenter:length(labels)], "midhigh")
+
   data$value <- ifelse(data$level %in% negitive_levels,
                        data$value*-100, data$value*100 )
 
 
+
+
   ##Create fill column for the graph (must double middle color)
-  colorcenter <- colors[numcenter-1]   #subtract one since color palette dosn't include extra label column
-  doublemiddle_colors <- colors %>% as_tibble() %>%
+  labelcenter <- labels[numcenter-1]   #subtract one since color palette dosn't include extra label column
+  doublemiddle_labels <- labels %>% as_tibble() %>%
     #insert before since numcenter includes quesetion column
-    add_row(value = colorcenter, .before = numcenter) %>%
+    add_row(value = labelcenter, .before = numcenter) %>%
     pull(1)
   #add colum to dataframe
-  data$colorslabel <- rep(doublemiddle_colors,
-                          NROW(data)/length(doublemiddle_colors))
+  data$doublemiddle_label <- rep(doublemiddle_labels,
+                                 NROW(data)/length(doublemiddle_labels))
 
 
   #set order for x axis
@@ -152,11 +156,17 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
     as.character %>%
     rev
 
+  data.low <- data %>% filter(level %in% negitive_levels)
+  data.high <- data %>% filter(level %in% positive_levels)
+
   graph.likert <- ggplot() +
-    geom_bar(data=data, aes(x = factor(Item, levels = row_order), y=value, fill = colorslabel),
-             position="stack", stat="identity") +
+    geom_bar(data=data.low, aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
+             ,stat="identity", position = position_stack(reverse = FALSE)) +
+    geom_bar(data=data.high , aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
+             ,stat="identity", position = position_stack(reverse = TRUE)) +
     geom_hline(yintercept = 0, linewidth = 2, color =c("white")) +
-    scale_fill_manual(values = colors, labels = labels, breaks = colors) +
+    #scale_fill_identity("",  labels = labels, breaks = colors, guide = "legend") +
+    scale_fill_manual(values = colors, labels = labels, breaks = labels) +
     scale_y_continuous(breaks=seq(lower_bound ,upper_bound,25),
                        limits=c(lower_bound,upper_bound),
                        labels = abs(seq(lower_bound, upper_bound, 25))) +
