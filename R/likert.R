@@ -69,7 +69,10 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
   #data is in class = table, transform to numeric
   out <- tibble::rownames_to_column(out, "Item")
 
+  #transform data to numeric and replace NA with 0
   out[,-1] <- sapply(out[-1], function(x) as.numeric(x))
+  out[is.na(out)] <- 0
+
 
   return(out)
 }

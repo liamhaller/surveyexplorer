@@ -64,6 +64,16 @@ berlinbears$p_likes_zoo <- sample( c(1, 2,3,4,5), 500,
                                         replace=TRUE, prob=c(0.70, .15, .05, .05,.05))
 
 
+
+#Survey weights
+
+berlinbears$weights <- rnorm(500, 1, .5)
+berlinbears$weights <- ifelse(berlinbears$weights < 0, berlinbears$weights*-1, berlinbears$weights)
+
+
+
+
+
 usethis::use_data(berlinbears, overwrite = TRUE)
 
 

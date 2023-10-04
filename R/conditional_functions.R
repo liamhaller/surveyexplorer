@@ -91,6 +91,8 @@ conditional_mean <- function(data, mean_var, category_var){
 
 
 
+
+
 #' Calculate conditional medians
 #'
 #' @param median_var data that will be used in the calculation of medians
@@ -181,6 +183,8 @@ conditional_median<- function(data, median_var, category_var){
   return(df)
   #return(output)
 }
+
+
 
 
 

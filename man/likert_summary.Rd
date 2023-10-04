@@ -10,9 +10,9 @@ likert_summary(data, low_is_agree = FALSE, order_rows = FALSE)
 \arguments{
 \item{data}{either a dataframe or a vector of likert data}
 
-\item{low_is_agree}{If 1 is agree/strongly agree}
+\item{low_is_agree}{Set true if 1 is agree/strongly agree so order will be disagree to agree}
 
-\item{order_rows}{If true rows will be ordered by largest to smallest}
+\item{order_rows}{If true rows will be ordered by decreasing strongly agree values}
 }
 \value{
 A dataframe of percentages corresponding to the share of each category

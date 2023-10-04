@@ -2,27 +2,33 @@
 % Please edit documentation in R/singlechoice.R
 \name{singlechoice_graph}
 \alias{singlechoice_graph}
-\title{Visualize frequencies in single choice survey questions}
+\title{Visualize frequencies of single choice survey questions}
 \usage{
 singlechoice_graph(
   dataset,
   question,
   subgroup = NULL,
-  levels_to_exclude = NULL
+  levels_to_exclude = NULL,
+  weights = NULL,
+  return_data = FALSE
 )
 }
 \arguments{
-\item{dataset}{data frame or a tibble}
+\item{dataset}{Data frame or a tibble}
 
-\item{question}{name of the column in the dataset to graph}
+\item{question}{Name of the column in the dataset to graph}
 
 \item{subgroup}{name of the subgroup to segment the data by}
 
-\item{levels_to_exclude}{levels of the question varable to exclude in the graph}
+\item{levels_to_exclude}{levels of the subgroup varable to exclude when stratifying \code{question}}
+
+\item{weights}{an optional vector of survey weights}
+
+\item{return_data}{Return only the filtered data to create custom graphs/tables}
 }
 \value{
 A barchart of frequencies
 }
 \description{
-Visualize frequencies in single choice survey questions
+Visualize frequencies of single choice survey questions
 }
