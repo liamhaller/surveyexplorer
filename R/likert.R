@@ -89,6 +89,10 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
 #' @param data Summerized likert data (first column must be names)
 #' @param levels example text
 #' @param colors example text
+#' @importFrom tidyr pivot_longer
+#' @importFrom dplyr mutate arrange pull
+#' @importFrom tibble as_tibble
+#' @import ggplot2
 #'
 #' @return example return
 #' @export
@@ -133,8 +137,6 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
 
   data$value <- ifelse(data$level %in% negitive_levels,
                        data$value*-100, data$value*100 )
-
-
 
 
   ##Create fill column for the graph (must double middle color)

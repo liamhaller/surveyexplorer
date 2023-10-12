@@ -6,16 +6,16 @@
 \usage{
 likert_graph(
   data,
-  levels = c("Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agre"),
+  labels = c("Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agre"),
   colors = c("#d73027", "#E36A64", "#FEEBD7", "#8ECF8C", "#66bd63")
 )
 }
 \arguments{
 \item{data}{Summerized likert data (first column must be names)}
 
-\item{levels}{example text}
-
 \item{colors}{example text}
+
+\item{levels}{example text}
 }
 \value{
 example return
