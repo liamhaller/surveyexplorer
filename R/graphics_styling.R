@@ -8,7 +8,6 @@
 #' @param x_axis_text_size size of x axis text
 #' @param y_axis_text_size size of y axis text
 #' @param legend_text_size Size of text in legend
-#' @param legend_key_size size of legond icons
 #' @import ggplot2
 #' @importFrom sysfonts font_files font_add
 #' @return No return, just a theme to add to ggplotfiles
@@ -16,7 +15,7 @@
 #'
 dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x_axis_title_size = 14,
                         y_axis_title_size = 14, x_axis_text_size = 12,
-                        y_axis_text_size = 12, legend_text_size = 12, legend_key_size = 2){
+                        y_axis_text_size = 12, legend_text_size = 12){
 
 
   if(calibri == TRUE){
@@ -52,7 +51,6 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
       legend.title = element_text(color = "#4d4d4d"),
       legend.background = element_rect(fill = '#EAEDEC'),
       legend.key = element_rect(fill = "#EAEDEC"),
-      legend.key.size = unit(legend_key_size),
       legend.position = "bottom",
 
       ### Design ###
@@ -80,7 +78,7 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
       axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d"),
 
       ### Legend ###
-      legend.text= element_text(color = "#4d4d4d"),
+      legend.text= element_text(color = "#4d4d4d", size = legend_text_size),
       legend.title = element_text(color = "#4d4d4d"),
       legend.background = element_rect(fill = '#EAEDEC'),
       legend.key = element_rect(fill = "#EAEDEC"),
