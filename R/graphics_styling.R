@@ -7,6 +7,8 @@
 #' @param y_axis_title_size size of y axis title
 #' @param x_axis_text_size size of x axis text
 #' @param y_axis_text_size size of y axis text
+#' @param legend_text_size Size of text in legend
+#' @param legend_key_size size of legond icons
 #' @import ggplot2
 #' @importFrom sysfonts font_files font_add
 #' @return No return, just a theme to add to ggplotfiles
