@@ -144,8 +144,6 @@ singlechoice_table <- function(dataset, question, subgroup = NULL,
   try(subgroup <- rlang::ensym(subgroup), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
 
-
-
   data.table <- dataset %>%  singlechoice_graph(!!question,
                                               if(!is.null(subgroup)){subgroup},
                                               levels_to_exclude,

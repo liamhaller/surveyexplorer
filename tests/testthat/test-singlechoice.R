@@ -3,7 +3,8 @@
 
 test_that("tibble as input", {
   berlinbears <- dplyr::as_tibble(berlinbears)
-  expect_no_condition(singlechoice_graph(berlinbears, question = income))
+  expect_no_error(singlechoice_graph(berlinbears, question = income))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income))
 })
 
 
@@ -11,26 +12,30 @@ test_that("tibble as input", {
 
 test_that("subgroup works", {
   expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = gender))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = gender))
+
 })
 
 test_that("One correct level to exclude", {
   berlinbears <- dplyr::as_tibble(berlinbears)
-  expect_no_condition(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
+  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
+
 })
 
 test_that("One valid level to exclude", {
-  berlinbears <- dplyr::as_tibble(berlinbears)
+  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
   expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
 })
 
 test_that("One invalid level to exclude", {
-  berlinbears <- dplyr::as_tibble(berlinbears)
   expect_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bears')))
 })
 
 test_that("Multiple valid level to exclude", {
   berlinbears <- dplyr::as_tibble(berlinbears)
-  expect_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear', 'brown bear')))
+  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear', 'brown bear')))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear', 'brown bear')))
 })
 
 
@@ -43,7 +48,9 @@ test_that("One valid one invalid level to exclude", {
 
 
 test_that("weights works", {
-  expect_no_condition(singlechoice_graph(berlinbears, question = income,
+  expect_no_error(singlechoice_graph(berlinbears, question = income,
+                                     subgroup = gender, weights = weights))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income,
                                      subgroup = gender, weights = weights))
 })
 
