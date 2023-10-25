@@ -1,12 +1,12 @@
 
 #' Visualize frequencies of single choice survey questions
 #'
-#' @param dataset Data frame or a tibble
-#' @param question Name of the column in the dataset to graph
-#' @param subgroup name of the subgroup to segment the data by
-#' @param levels_to_exclude levels of the subgroup varable to exclude when stratifying `question`
-#' @param weights an optional vector of survey weights
-#' @param return_data Return only the filtered data to create custom graphs/tables
+#' @param dataset Dataframe or a tibble containing survey question to be analyzed
+#' @param question Name of the column in the `dataset` to be graphed
+#' @param subgroup Optional variable to stratify the frequencies of `question` variable
+#' @param levels_to_exclude Optional vector of levels of `subgroup` to exclude
+#' @param weights Optional column containing survey weights
+#' @param return_data If true, the function returns the filtered data to create custom graphs/tables
 #'
 #'
 #' @return A barchart of frequencies
@@ -52,6 +52,18 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
 
   #filter variables to exclude, if specified
   if(!is.null(levels_to_exclude)){
+    #Check that provided levels are contained within subgroup variable
+    subgroup_levels <- tabled.question %>%
+      dplyr::select(!!subgroup) %>%
+      unique %>%
+      dplyr::pull(1) %>%
+      as.character
+
+    for(i in 1:length(levels_to_exclude)){ #vector has length at least 1
+      if(levels_to_exclude[[i]] %ni% subgroup_levels){
+        stop('Levels to exclude not found within subgroup variable')
+      }
+    }
     tabled.question <- tabled.question %>%
       dplyr::filter(!!subgroup %ni% levels_to_exclude)}
 
@@ -68,7 +80,7 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
   } else {
     tabled.question <- tabled.question %>%
       group_by(!!question) %>%
-      count(!!question, wt = weights, 'n') %>%
+      count(!!question, wt = weights, name = 'n') %>%
       ungroup() %>%
       mutate(freq = n/sum(n))
 
@@ -93,14 +105,14 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
     #if subgroup is specified, facet graphs and add subtitle
     if(is.null(subgroup)){
       graph.singlechoice <- graph.singlechoice +
-        labs(y = "", x = "", title = paste0('Variable: ', question),
+        labs(y = "", x = "", title = paste0('Question: ', question),
              subtitle = paste("Filter: none"))
 
       return(graph.singlechoice)
 
      } else {
        graph.singlechoice <- graph.singlechoice +
-        labs(y = "", x = "", title = paste('Variable: ', question),
+        labs(y = "", x = "", title = paste('Question: ', question),
              subtitle = paste("Filter: ",subgroup )) +
           facet_wrap(~subgroup, scales = "fixed", ncol = 2)
 
@@ -112,7 +124,96 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
 
 #sc_table
 
+#' Summarize grouped counts and frequencies
+#'
+#' @param dataset Dataframe or a tibble containing survey question to be analyzed
+#' @param question Name of the column in the `dataset` to be graphed
+#' @param subgroup Optional variable to stratify the frequencies of `question` variable
+#' @param levels_to_exclude Optional vector of levels of `subgroup` to exclude
+#' @param weights Optional column containing survey weights
+#' @param return_data If true, the function returns the filtered data to create custom graphs/tables
+#'
+#' @return table of frequences
+#' @export
+#'
+singlechoice_table <- function(dataset, question, subgroup = NULL,
+                               levels_to_exclude = NULL, weights = NULL){
 
+
+  question <- rlang::ensym(question)
+  try(subgroup <- rlang::ensym(subgroup), silent = TRUE) # try function is here since if is null, then it will fail
+  try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
+
+
+
+  data.table <- dataset %>%  singlechoice_graph(!!question,
+                                              if(!is.null(subgroup)){subgroup},
+                                              levels_to_exclude,
+                                              if(!is.null(weights)){weights},
+                                              return_data = TRUE)
+
+
+
+  if(is.null(subgroup)){
+
+    gt.table <-  data.table %>%
+      gt(rowname_col = 'question') %>%
+      tab_style(
+        style = cell_text(align = "center"),
+        locations = cells_column_labels()) %>%
+      cols_label(matches('freq') ~ 'Frequency',
+                 matches('n') ~ 'Count') %>%
+      grand_summary_rows(columns = matches('n'),
+                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      grand_summary_rows(columns = matches('freq'),
+                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      fmt_percent(columns = contains('freq'), decimals = 2) %>%
+      tab_header(
+        title = paste0("Question: ", question))
+
+
+
+  } else {
+
+    gt.table <-  data.table %>%
+    pivot_wider(names_from=c(subgroup),
+                values_from=c(n,freq),
+                names_glue = "{subgroup}_{.value}",
+                names_sort = TRUE) %>%
+      rowwise(question) %>%
+      mutate(zztotal_n = sum(c_across(ends_with('_n')))) %>%
+      ungroup() %>%
+      mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
+      select(question, sort(colnames(.))) %>%
+      gt(rowname_col = 'question', groupname_col = 'subgroup') %>%
+      tab_spanner_delim(delim="_") %>%
+      tab_style(
+        style = cell_text(align = "center"),
+        locations = cells_column_labels()) %>%
+      tab_spanner(label = md('**Row Totals**'), columns = starts_with("zz"), level = 1, replace = TRUE) %>%
+      cols_label(matches('freq') ~ 'Frequency',
+                 matches('n') ~ 'Count') %>%
+      grand_summary_rows(columns = matches('n'),
+                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      grand_summary_rows(columns = matches('freq'),
+                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      fmt_percent(columns = contains('freq'), decimals = 2)  %>%
+      tab_header(
+        title = paste0("Question: ", question),
+        subtitle = paste0("Filter: ", subgroup))
+  }
+
+
+  if(!is.null(weights)){
+    gt.table <- gt.table %>%
+      tab_footnote(
+        footnote = "Frequencies and counts are weighted") %>%
+      fmt_number(columns = contains('n'), decimals = 1)
+
+  }
+
+  return(gt.table)
+  }
 
 
 

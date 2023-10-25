@@ -12,8 +12,7 @@ dezim_style(
   y_axis_title_size = 14,
   x_axis_text_size = 12,
   y_axis_text_size = 12,
-  legend_text_size = 12,
-  legend_key_size = 2
+  legend_text_size = 12
 )
 }
 \arguments{
@@ -32,8 +31,6 @@ dezim_style(
 \item{y_axis_text_size}{size of y axis text}
 
 \item{legend_text_size}{Size of text in legend}
-
-\item{legend_key_size}{size of legond icons}
 }
 \value{
 No return, just a theme to add to ggplotfiles

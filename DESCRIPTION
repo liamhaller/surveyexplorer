@@ -1,9 +1,9 @@
 Package: dezim
-Title: Suite of functions to descriptively summerize survey data
+Title: Quickly summarize and graph complex survey data
 Version: 0.0.0.9000
 Authors@R: 
     person("Liam", "Haller", , "haller@dezim-institut.de", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "0000-0001-8033-6599"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
