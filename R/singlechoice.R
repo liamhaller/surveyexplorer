@@ -133,6 +133,8 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
 #' @param weights Optional column containing survey weights
 #' @param return_data If true, the function returns the filtered data to create custom graphs/tables
 #'
+#' @importFrom gt gt tab_style cols_label grand_summary_rows fmt_percent tab_header tab_footnote
+#'
 #' @return table of frequences
 #' @export
 #'
@@ -149,7 +151,6 @@ singlechoice_table <- function(dataset, question, subgroup = NULL,
                                               levels_to_exclude,
                                               if(!is.null(weights)){weights},
                                               return_data = TRUE)
-
 
 
   if(is.null(subgroup)){
