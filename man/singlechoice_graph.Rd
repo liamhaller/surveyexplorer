@@ -9,12 +9,11 @@ singlechoice_graph(
   question,
   subgroup = NULL,
   levels_to_exclude = NULL,
-  weights = NULL,
-  return_data = FALSE
+  weights = NULL
 )
 }
 \arguments{
-\item{dataset}{Dataframe or a tibble containing survey question to be analyzed}
+\item{dataset}{Dataframe or a tibble containing the \code{question} to be analyzed}
 
 \item{question}{Name of the column in the \code{dataset} to be graphed}
 
@@ -23,8 +22,6 @@ singlechoice_graph(
 \item{levels_to_exclude}{Optional vector of levels of \code{subgroup} to exclude}
 
 \item{weights}{Optional column containing survey weights}
-
-\item{return_data}{If true, the function returns the filtered data to create custom graphs/tables}
 }
 \value{
 A barchart of frequencies

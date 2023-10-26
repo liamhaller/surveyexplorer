@@ -6,8 +6,6 @@
 #' @param order_rows If true rows will be ordered by decreasing strongly agree values
 #'
 #' @return A dataframe of percentages corresponding to the share of each category
-#' @importFrom purrr map_df
-#' @importFrom tibble rownames_to_column
 #'
 #' @export
 #'
@@ -40,7 +38,7 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
   values <- sort(values)
 
   #calculate percentage present for each answer
-  out <- map_df(dataframe, ~ prop.table(table(.x)))
+  out <- purrr::map_df(dataframe, ~ prop.table(table(.x)))
 
   #save reslut as a data.frame so we can add row names
   out <- as.data.frame(out)
@@ -89,10 +87,6 @@ likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
 #' @param data Summerized likert data (first column must be names)
 #' @param levels example text
 #' @param colors example text
-#' @importFrom tidyr pivot_longer
-#' @importFrom dplyr mutate arrange pull
-#' @importFrom tibble as_tibble
-#' @import ggplot2
 #'
 #' @return example return
 #' @export
@@ -116,9 +110,9 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
   namecenter <- colnames(data[numcenter])
 
   data <- data %>%
-    mutate(midhigh = data[, numcenter] / 2, .after = all_of(namecenter)) %>%
-    mutate(midlow = data[, numcenter] / 2, .after = all_of(namecenter)) %>%
-    select(-all_of(namecenter))
+    dplyr::mutate(midhigh = data[, numcenter] / 2, .after = all_of(namecenter)) %>%
+    dplyr::mutate(midlow = data[, numcenter] / 2, .after = all_of(namecenter)) %>%
+    dplyr::select(-all_of(namecenter))
 
 
   ##computer lower and upper bound of x axis on graph
@@ -129,7 +123,7 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
 
   #Prep data for graphing format
   data <- data %>%
-    pivot_longer(2:NCOL(.), names_to = 'level')
+    tidyr::pivot_longer(2:NCOL(.), names_to = 'level')
 
   #multiply 'negitive' leveles by -1
   negitive_levels <- c(labels[1:ceiling(numlabels/2)], "midlow")
@@ -141,10 +135,10 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
 
   ##Create fill column for the graph (must double middle color)
   labelcenter <- labels[numcenter-1]   #subtract one since color palette dosn't include extra label column
-  doublemiddle_labels <- labels %>% as_tibble() %>%
+  doublemiddle_labels <- labels %>% tibble::as_tibble() %>%
     #insert before since numcenter includes quesetion column
-    add_row(value = labelcenter, .before = numcenter) %>%
-    pull(1)
+    dplyr::add_row(value = labelcenter, .before = numcenter) %>%
+    dplyr::pull(1)
   #add colum to dataframe
   data$doublemiddle_label <- rep(doublemiddle_labels,
                                  NROW(data)/length(doublemiddle_labels))
@@ -152,29 +146,29 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
 
   #set order for x axis
   row_order <- data %>%
-    filter(level ==  labels[length(labels)]) %>%
-    arrange(-value) %>%
-    pull(1) %>%
+    dplyr::filter(level ==  labels[length(labels)]) %>%
+    dplyr::arrange(-value) %>%
+    dplyr::pull(1) %>%
     as.character %>%
     rev
 
-  data.low <- data %>% filter(level %in% negitive_levels)
-  data.high <- data %>% filter(level %in% positive_levels)
+  data.low <- data %>% dplyr::filter(level %in% negitive_levels)
+  data.high <- data %>% dplyr::filter(level %in% positive_levels)
 
-  graph.likert <- ggplot() +
-    geom_bar(data=data.low, aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
-             ,stat="identity", position = position_stack(reverse = FALSE)) +
-    geom_bar(data=data.high , aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
-             ,stat="identity", position = position_stack(reverse = TRUE)) +
-    geom_hline(yintercept = 0, linewidth = 2, color =c("white")) +
+  graph.likert <- ggplot2::ggplot() +
+    ggplot2::geom_bar(data=data.low, aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
+             ,stat="identity", position = ggplot2::position_stack(reverse = FALSE)) +
+    ggplot2::geom_bar(data=data.high , aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
+             ,stat="identity", position = ggplot2::position_stack(reverse = TRUE)) +
+    ggplot2::geom_hline(yintercept = 0, linewidth = 2, color =c("white")) +
     #scale_fill_identity("",  labels = labels, breaks = colors, guide = "legend") +
-    scale_fill_manual(values = colors, labels = labels, breaks = labels) +
-    scale_y_continuous(breaks=seq(lower_bound ,upper_bound,25),
+    ggplot2::scale_fill_manual(values = colors, labels = labels, breaks = labels) +
+    ggplot2::scale_y_continuous(breaks=seq(lower_bound ,upper_bound,25),
                        limits=c(lower_bound,upper_bound),
                        labels = abs(seq(lower_bound, upper_bound, 25))) +
-    scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) +
-    coord_flip() +
-    labs(title = "",
+    ggplot2::scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) +
+    ggplot2::coord_flip() +
+    ggplot2::labs(title = "",
          subtitle = "",
          x = "",
          y = "",

@@ -5,7 +5,6 @@
 #' @param categorical_only reccomended. only look at variables considered to be categorical
 #' @param column_names placeholder
 #'
-#' @importFrom dplyr %>%
 #'
 #' @return column numbers that match the given string, or if column_names = TRUE then the names of the columns
 #' @export
@@ -51,8 +50,6 @@ Zfind <- function(dataframe, answer_pattern, categorical_only = TRUE, column_nam
 #' @param columns_to_replace placeholder
 #' @param old_text placeholder
 #' @param new_text placeholder
-#' @importFrom rlang expr parse_expr
-#' @importFrom dplyr mutate case_when
 #' @return dataset with values replaced in selected columns
 #' @export
 #'
@@ -77,7 +74,7 @@ Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
   new_text_character <- is.character(new_text)
 
 
-  base_expression <- rlang::expr('dataframe %>% mutate(across(columns_to_replace, ~case_when(')
+  base_expression <- rlang::expr('dataframe %>% dplyr::mutate(across(columns_to_replace, ~dplyr::case_when(')
   argument_string <- c()
   for(i in seq_along(old_text)){
 
@@ -97,7 +94,7 @@ Zreplace <- function(dataframe, columns_to_replace, old_text, new_text) {
 
 
   expression <- paste0(base_expression, argument_string, ')))')
-  eval(parse_expr(expression))
+  eval(rlang::parse_expr(expression))
 }
 
 

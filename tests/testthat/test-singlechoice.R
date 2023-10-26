@@ -1,6 +1,14 @@
 
+
+#Singlechoice_summary
+
+
+
+
 #Valid inputs
 
+
+#singlechoice_graph
 test_that("tibble as input", {
   berlinbears <- dplyr::as_tibble(berlinbears)
   expect_no_error(singlechoice_graph(berlinbears, question = income))

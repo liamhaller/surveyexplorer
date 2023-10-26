@@ -8,8 +8,9 @@
 #' @param x_axis_text_size size of x axis text
 #' @param y_axis_text_size size of y axis text
 #' @param legend_text_size Size of text in legend
-#' @import ggplot2
-#' @importFrom sysfonts font_files font_add
+#' @importFrom ggplot2 element_text element_rect element_line
+#'
+#'
 #' @return No return, just a theme to add to ggplotfiles
 #' @export
 #'
