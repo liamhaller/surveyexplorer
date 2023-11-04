@@ -182,13 +182,13 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
   #no subgroup
     mc_upset <- data.summary %>%
       as_tibble(rownames = "respondent") %>%
-      pivot_longer(-c(respondent, weights) , names_to = 'question') %>%
+      tidyr::pivot_longer(-c(respondent, weights) , names_to = 'question') %>%
       filter(value != 0) %>%
       group_by(respondent, weights) %>%
       summarize(question = list(question)) %>%
       group_by(question) %>%
       summarise(count = round(sum(weights),0)) %>%
-      uncount(count) %>%
+      tidyr::uncount(count) %>%
       ggplot2::ggplot(aes(x = question)) +
       ggplot2::geom_bar() +
       ggupset::scale_x_upset(order_by = 'freq')
@@ -196,20 +196,20 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
     #if weights are specified, transform y axis to percentage (absoulte values loose meaning)
     if(length(unique(data.summary$weights)) > 1){
       mc_upset <- mc_upset +
-        scale_y_continuous(labels = scales::percent_format(scale = 1))
+      ggplot2::scale_y_continuous(labels = scales::percent_format(scale = 1))
     }
 
   } else {
   #with subgroup
     mc_upset <- data.summary %>%
       as_tibble(rownames = "respondent") %>%
-      pivot_longer(-c(respondent, !!group_by, weights) , names_to = 'question') %>%
+      tidyr::pivot_longer(-c(respondent, !!group_by, weights) , names_to = 'question') %>%
       filter(value != 0) %>%
       group_by(respondent, !!group_by, weights) %>%
       summarize(question = list(question)) %>%
       group_by(question, !!group_by) %>%
       summarise(count = round(sum(weights),0)) %>%
-      uncount(count) %>%
+      tidyr::uncount(count) %>%
       ggplot2::ggplot(aes(x = question, fill = !!group_by)) +
       ggplot2::geom_bar() +
       ggupset::scale_x_upset(order_by = 'freq')
@@ -217,7 +217,7 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
     #if weights are specified, transform y axis to percentage (absoulte values loose meaning
     if(length(unique(data.summary$weights)) > 1){
       mc_upset <- mc_upset +
-      scale_y_continuous(labels = scales::percent_format(scale = 1))
+      ggplot2::scale_y_continuous(labels = scales::percent_format(scale = 1))
       }
 
 

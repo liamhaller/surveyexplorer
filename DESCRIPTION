@@ -20,7 +20,7 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
-    ggupset
+    ggupset,
     knitr,
     rmarkdown,
     sysfonts,

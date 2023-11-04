@@ -159,6 +159,8 @@ singlechoice_graph <- function(dataset, question, group_by = NULL,
 singlechoice_table <- function(dataset, question, group_by = NULL,
                                subgroups_to_exclude = NULL, weights = NULL){
 
+  #Define dot as variable
+  . <- NULL
 
   question <- rlang::ensym(question)
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail

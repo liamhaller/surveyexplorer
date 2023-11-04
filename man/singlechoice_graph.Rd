@@ -13,13 +13,13 @@ singlechoice_graph(
 )
 }
 \arguments{
-\item{dataset}{Dataframe or a tibble containing the \code{question} to be analyzed}
+\item{dataset}{Dataframe or a tibble containing the \code{question} column to be analyzed}
 
-\item{question}{Name of the column in the \code{dataset} to be graphed}
+\item{question}{Name of the column in the \code{dataset} to be summerized}
 
-\item{group_by}{Optional variable to stratify the frequencies of \code{question} variable}
+\item{group_by}{Name of column in \code{dataset} used to partition the analysis into subgroups}
 
-\item{subgroups_to_exclude}{Optional vector of levels of \code{group_by} to exclude}
+\item{subgroups_to_exclude}{vector that contains level(s) of \code{group_by} variable to exclude}
 
 \item{weights}{Optional column containing survey weights}
 }

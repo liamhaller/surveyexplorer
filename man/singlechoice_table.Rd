@@ -13,7 +13,7 @@ singlechoice_table(
 )
 }
 \arguments{
-\item{dataset}{Dataframe or a tibble containing survey question to be analyzed}
+\item{dataset}{Dataframe or a tibble containing the \code{question} column to be analyzed}
 
 \item{question}{Name of the column in the \code{dataset} to be graphed}
 
