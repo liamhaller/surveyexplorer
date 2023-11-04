@@ -7,8 +7,8 @@
 singlechoice_table(
   dataset,
   question,
-  subgroup = NULL,
-  levels_to_exclude = NULL,
+  group_by = NULL,
+  subgroups_to_exclude = NULL,
   weights = NULL
 )
 }
@@ -17,9 +17,9 @@ singlechoice_table(
 
 \item{question}{Name of the column in the \code{dataset} to be graphed}
 
-\item{subgroup}{Optional variable to stratify the frequencies of \code{question} variable}
+\item{group_by}{Optional variable to stratify the frequencies of \code{question} variable}
 
-\item{levels_to_exclude}{Optional vector of levels of \code{subgroup} to exclude}
+\item{subgroups_to_exclude}{Optional vector of levels of \code{group_by} to exclude}
 
 \item{weights}{Optional column containing survey weights}
 }

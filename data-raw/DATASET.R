@@ -74,7 +74,7 @@ berlinbears$weights <- ifelse(berlinbears$weights < 0, berlinbears$weights*-1, b
 
 
 
-usethis::use_data(berlinbears, overwrite = TRUE)
+#usethis::use_data(berlinbears, overwrite = TRUE)
 
 
 

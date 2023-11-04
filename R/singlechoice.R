@@ -1,22 +1,23 @@
 
 #' Summarize count and frequency of a single choice survey question
 #'
-#' @param dataset Dataframe or a tibble containing the `question` to be analyzed
+#' @param dataset Dataframe or a tibble containing the `question` column to be analyzed
 #' @param question Name of the column in the `dataset` to be summerized
-#' @param subgroup Optional variable to stratify the frequencies of `question` variable
-#' @param levels_to_exclude Optional vector of levels of `subgroup` to exclude
+#' @param group_by Name of column in `dataset` used to partition the analysis into subgroups
+#' @param subgroups_to_exclude vector that contains level(s) of `group_by` variable to exclude
 #' @param weights Optional column containing survey weights
 #' @importFrom rlang .data
+#' @import dplyr
 #' @return Dataframe of count and frequency for each
 #' @export
 #'
-singlechoice_summary <- function(dataset, question, subgroup = NULL,
-                                 levels_to_exclude = NULL, weights = NULL){
+singlechoice_summary <- function(dataset, question, group_by = NULL,
+                                 subgroups_to_exclude = NULL, weights = NULL){
 
 
   #Inputs to symbols to use with dplyr syntax
   question <- rlang::ensym(question)
-  try(subgroup <- rlang::ensym(subgroup), silent = TRUE) # try function is here since if is null, then it will fail
+  try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
 
 
@@ -31,53 +32,52 @@ singlechoice_summary <- function(dataset, question, subgroup = NULL,
     #if weights are specified, rename column to weights
     #necessary since weights column will always be selected
   } else {
-    dataset <- dataset %>% dplyr::rename(weights = !!weights)
+    dataset <- dataset %>% rename(weights = !!weights)
 
   }
 
-  #select subgroup, if specified
-  if(is.null(subgroup)){
-    tabled.question <-  dataset %>% dplyr::select(!!question, weights)
+  #select group_by, if specified
+  if(is.null(group_by)){
+    tabled.question <-  dataset %>% select(!!question, weights)
   } else {
-    tabled.question <-  dataset %>% dplyr::select(!!question, !!subgroup, weights)
+    tabled.question <-  dataset %>% select(!!question, !!group_by, weights)
   }
 
   #filter variables to exclude, if specified
-  if(!is.null(levels_to_exclude)){
-    #Check that provided levels are contained within subgroup variable
-    subgroup_levels <- tabled.question %>%
-      dplyr::select(!!subgroup) %>%
+  if(!is.null(subgroups_to_exclude)){
+    #Check that provided levels are contained within group_by variable
+    group_by_levels <- tabled.question %>%
+      select(!!group_by) %>%
       unique %>%
-      dplyr::pull(1) %>%
+      pull(1) %>%
       as.character
 
-    for(i in 1:length(levels_to_exclude)){ #vector has length at least 1
-      if(levels_to_exclude[[i]] %ni% subgroup_levels){
-        stop('Levels to exclude not found within subgroup variable')
+    for(i in 1:length(subgroups_to_exclude)){ #vector has length at least 1
+      if(subgroups_to_exclude[[i]] %ni% group_by_levels){
+        stop('Levels to exclude not found within group_by variable')
       }
     }
     tabled.question <- tabled.question %>%
-      dplyr::filter(!!subgroup %ni% levels_to_exclude)}
+      filter(!!group_by %ni% subgroups_to_exclude)}
 
-  #compute dataset with and without subgroup sepereatly
+  #compute dataset with and without group_by sepereatly
   n <- NULL #variable is created using NSE
-  if(!is.null(subgroup)){
+  if(!is.null(group_by)){
     tabled.question <-  tabled.question %>%
-      dplyr::group_by(!!question, !!subgroup) %>%
-      dplyr::count(!!question, wt = weights, name = 'n') %>%
-      dplyr::group_by(!!subgroup) %>%
-      dplyr::mutate(freq = .data$n/sum(.data$n))
+      group_by(!!question, !!group_by) %>%
+      count(!!question, wt = weights, name = 'n') %>%
+      group_by(!!group_by) %>%
+      mutate(freq = .data$n/sum(.data$n))
 
-    colnames(tabled.question) <- c('question', 'subgroup', 'n', 'freq')
+    colnames(tabled.question) <- c('question', 'group_by', 'n', 'freq')
 
   } else {
     tabled.question <- tabled.question %>%
-      dplyr::group_by(!!question) %>%
-      dplyr::count(!!question, wt = weights, name = 'n') %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(freq = n/sum(n))
-
-    colnames(tabled.question) <- c('question', 'n', 'freq')
+      group_by(!!question) %>%
+      count(!!question, wt = weights, name = 'n') %>%
+      ungroup() %>%
+      mutate(freq = n/sum(n))
+      colnames(tabled.question) <- c('question', 'n', 'freq')
   }
 
   return(tabled.question)
@@ -91,30 +91,25 @@ singlechoice_summary <- function(dataset, question, subgroup = NULL,
 
 #' Visualize frequencies of single choice survey questions
 #'
-#' @param dataset Dataframe or a tibble containing the `question` to be analyzed
-#' @param question Name of the column in the `dataset` to be graphed
-#' @param subgroup Optional variable to stratify the frequencies of `question` variable
-#' @param levels_to_exclude Optional vector of levels of `subgroup` to exclude
-#' @param weights Optional column containing survey weights
+#' @inheritParams singlechoice_summary
 #'
-#' @importFrom magrittr `%>%`
 #' @importFrom ggplot2 ggplot aes labs
 
 #' @return A barchart of frequencies
 #' @export
 #'
 #'
-singlechoice_graph <- function(dataset, question, subgroup = NULL,
-                               levels_to_exclude = NULL, weights = NULL){
+singlechoice_graph <- function(dataset, question, group_by = NULL,
+                               subgroups_to_exclude = NULL, weights = NULL){
 
   question <- rlang::ensym(question)
-  try(subgroup <- rlang::ensym(subgroup), silent = TRUE) # try function is here since if is null, then it will fail
+  try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
 
 
   tabled.question <- dataset %>% singlechoice_summary(!!question,
-                                               if(!is.null(subgroup)){subgroup},
-                                               levels_to_exclude,
+                                               if(!is.null(group_by)){group_by},
+                                               subgroups_to_exclude,
                                                if(!is.null(weights)){weights})
 
   ## Create Graph ##
@@ -128,19 +123,18 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
       ggplot2::scale_y_continuous(labels = scales::percent, limits = c(0,1)) +
       ggplot2::theme_minimal()
 
-    #if subgroup is specified, facet graphs and add subtitle
-    if(is.null(subgroup)){
+    #if group_by is specified, facet graphs and add subtitle
+    if(is.null(group_by)){
       graph.singlechoice <- graph.singlechoice +
-        labs(y = "", x = "", title = paste0('Question: ', question),
-             subtitle = paste("Filter: none"))
+        labs(y = "", x = "", title = paste0('Question: ', question))
 
       return(graph.singlechoice)
 
      } else {
        graph.singlechoice <- graph.singlechoice +
          ggplot2::labs(y = "", x = "", title = paste('Question: ', question),
-             subtitle = paste("Filter: ",subgroup )) +
-         ggplot2::facet_wrap(~subgroup, scales = "fixed", ncol = 2)
+             subtitle = paste("grouped by: ",group_by )) +
+         ggplot2::facet_wrap(~group_by, scales = "fixed", ncol = 2)
        return(graph.singlechoice)
 
     }
@@ -151,10 +145,10 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
 
 #' Summarize grouped counts and frequencies
 #'
-#' @param dataset Dataframe or a tibble containing survey question to be analyzed
+#' @inheritParams singlechoice_summary
 #' @param question Name of the column in the `dataset` to be graphed
-#' @param subgroup Optional variable to stratify the frequencies of `question` variable
-#' @param levels_to_exclude Optional vector of levels of `subgroup` to exclude
+#' @param group_by Optional variable to stratify the frequencies of `question` variable
+#' @param subgroups_to_exclude Optional vector of levels of `group_by` to exclude
 #' @param weights Optional column containing survey weights
 #'
 #' @importFrom gt md
@@ -162,21 +156,21 @@ singlechoice_graph <- function(dataset, question, subgroup = NULL,
 #' @return table of frequences
 #' @export
 #'
-singlechoice_table <- function(dataset, question, subgroup = NULL,
-                               levels_to_exclude = NULL, weights = NULL){
+singlechoice_table <- function(dataset, question, group_by = NULL,
+                               subgroups_to_exclude = NULL, weights = NULL){
 
 
   question <- rlang::ensym(question)
-  try(subgroup <- rlang::ensym(subgroup), silent = TRUE) # try function is here since if is null, then it will fail
+  try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
 
   data.table <- dataset %>% singlechoice_summary(!!question,
-                                              if(!is.null(subgroup)){subgroup},
-                                              levels_to_exclude,
+                                              if(!is.null(group_by)){group_by},
+                                              subgroups_to_exclude,
                                               if(!is.null(weights)){weights})
 
 
-  if(is.null(subgroup)){
+  if(is.null(group_by)){
 
     gt.table <-  data.table %>%
       gt::gt(rowname_col = 'question') %>%
@@ -199,19 +193,19 @@ singlechoice_table <- function(dataset, question, subgroup = NULL,
     zztotal_n <- NULL
 
     gt.table <-  data.table %>%
-    tidyr::pivot_wider(names_from=c(subgroup),
-                values_from=c(n,freq),
-                names_glue = "{subgroup}_{.value}",
-                names_sort = TRUE) %>%
+      tidyr::pivot_wider(names_from=c(group_by),
+                         values_from=c(n,freq),
+                         names_glue = "{group_by}_{.value}",
+                         names_sort = TRUE) %>%
 
-      dplyr::rowwise(question) %>%
-      dplyr::mutate(zztotal_n = sum(dplyr::c_across(dplyr::ends_with('_n')))) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
-      dplyr::select(question, sort(colnames(.data))) %>%
+      rowwise(question) %>%
+      mutate(zztotal_n = sum(c_across(ends_with('_n')))) %>%
+      ungroup() %>%
+      mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
+      select(question, sort(names(.))) %>%
 
 
-      gt::gt(rowname_col = 'question', groupname_col = 'subgroup') %>%
+      gt::gt(rowname_col = 'question', groupname_col = 'group_by') %>%
       gt::tab_spanner_delim(delim="_") %>%
       gt::tab_style(
         style = gt::cell_text(align = "center"),
@@ -226,7 +220,7 @@ singlechoice_table <- function(dataset, question, subgroup = NULL,
       gt::fmt_percent(columns = contains('freq'), decimals = 2)  %>%
       gt::tab_header(
         title = paste0("Question: ", question),
-        subtitle = paste0("Filter: ", subgroup))
+        subtitle = paste0("grouped by: ", group_by))
   }
 
 

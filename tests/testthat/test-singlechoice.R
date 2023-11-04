@@ -16,40 +16,40 @@ test_that("tibble as input", {
 })
 
 
-#Subgroups and levels to exclude
+#group_bys and levels to exclude
 
-test_that("subgroup works", {
-  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = gender))
-  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = gender))
+test_that("group_by works", {
+  expect_no_error(singlechoice_graph(berlinbears, question = income, group_by = gender))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, group_by = gender))
 
 })
 
 test_that("One correct level to exclude", {
   berlinbears <- dplyr::as_tibble(berlinbears)
-  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
-  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
+  expect_no_error(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear')))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear')))
 
 })
 
 test_that("One valid level to exclude", {
-  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
-  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
+  expect_no_error(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear')))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear')))
 })
 
 test_that("One invalid level to exclude", {
-  expect_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bears')))
+  expect_error(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bears')))
 })
 
 test_that("Multiple valid level to exclude", {
   berlinbears <- dplyr::as_tibble(berlinbears)
-  expect_no_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear', 'brown bear')))
-  expect_no_warning(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear', 'brown bear')))
+  expect_no_error(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear', 'brown bear')))
+  expect_no_warning(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear', 'brown bear')))
 })
 
 
 test_that("One valid one invalid level to exclude", {
   berlinbears <- dplyr::as_tibble(berlinbears)
-  expect_error(singlechoice_graph(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear', 'brown bears')))
+  expect_error(singlechoice_graph(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear', 'brown bears')))
 })
 
 
@@ -57,9 +57,9 @@ test_that("One valid one invalid level to exclude", {
 
 test_that("weights works", {
   expect_no_error(singlechoice_graph(berlinbears, question = income,
-                                     subgroup = gender, weights = weights))
+                                     group_by = gender, weights = weights))
   expect_no_warning(singlechoice_graph(berlinbears, question = income,
-                                     subgroup = gender, weights = weights))
+                                     group_by = gender, weights = weights))
 })
 
 
@@ -76,21 +76,21 @@ test_that("table, question with weights", {
 
 
 
-test_that("table, question with subgroup", {
+test_that("table, question with group_by", {
   expect_no_error(singlechoice_table(berlinbears, question = income,
-                                                            subgroup = gender)
+                                                            group_by = gender)
   )
 })
 
 
 
-test_that("table, question with subgroup and weights", {
+test_that("table, question with group_by and weights", {
   expect_no_error(singlechoice_table(berlinbears, question = income,
-                                                            subgroup = gender, weights = weights))
+                                                            group_by = gender, weights = weights))
 })
 
-test_that("table, question with subgroup, weights, and exclusion", {
-  expect_no_error(singlechoice_table(berlinbears, question = income, subgroup = species, levels_to_exclude = c('black bear')))
+test_that("table, question with group_by, weights, and exclusion", {
+  expect_no_error(singlechoice_table(berlinbears, question = income, group_by = species, subgroups_to_exclude = c('black bear')))
 })
 
 
