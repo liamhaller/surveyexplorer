@@ -64,16 +64,16 @@ singlechoice_summary <- function(dataset, question, group_by = NULL,
   n <- NULL #variable is created using NSE
   if(!is.null(group_by)){
     tabled.question <-  tabled.question %>%
-      group_by(!!question, !!group_by) %>%
+      dplyr::group_by(!!question, !!group_by) %>%
       count(!!question, wt = weights, name = 'n') %>%
-      group_by(!!group_by) %>%
+      dplyr::group_by(!!group_by) %>%
       mutate(freq = .data$n/sum(.data$n))
 
     colnames(tabled.question) <- c('question', 'group_by', 'n', 'freq')
 
   } else {
     tabled.question <- tabled.question %>%
-      group_by(!!question) %>%
+      dplyr::group_by(!!question) %>%
       count(!!question, wt = weights, name = 'n') %>%
       ungroup() %>%
       mutate(freq = n/sum(n))
@@ -84,8 +84,6 @@ singlechoice_summary <- function(dataset, question, group_by = NULL,
 
 
 }
-
-
 
 
 
@@ -141,6 +139,77 @@ singlechoice_graph <- function(dataset, question, group_by = NULL,
 }
 
 
+
+
+
+
+
+#' Title
+#'
+#' @param data.table Output from either mutli or single summary
+#' @inheritParams singlechoice_summary
+#'
+#' @return Gt table
+#'
+frequency_table <- function(data.table, group_by){
+
+  try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
+
+
+  #No subgroup
+  if(is.null(group_by)){
+
+    gt.table <-  data.table %>%
+      gt::gt(rowname_col = 'question') %>%
+      gt::tab_style(
+        style = gt::cell_text(align = "center"),
+        locations = gt::cells_column_labels()) %>%
+      gt::cols_label(matches('freq') ~ 'Frequency',
+                     matches('n') ~ 'Count') %>%
+      gt::grand_summary_rows(columns = matches('n'),
+                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      gt::grand_summary_rows(columns = matches('freq'),
+                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      gt::fmt_percent(columns = contains('freq'), decimals = 2)
+
+
+    #with subgroup
+  } else {
+    #Define total count variabled, named zz because sorted alphabetically and should be last
+    zztotal_n <- NULL
+
+    gt.table <-  data.table %>%
+      tidyr::pivot_wider(names_from=c(group_by),
+                         values_from=c(n,freq),
+                         names_glue = "{group_by}_{.value}",
+                         names_sort = TRUE) %>%
+
+      rowwise(question) %>%
+      mutate(zztotal_n = sum(c_across(ends_with('_n')))) %>%
+      ungroup() %>%
+      mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
+      select(question, sort(names(.))) %>%
+
+      gt::gt(rowname_col = 'question', groupname_col = 'group_by') %>%
+      gt::tab_spanner_delim(delim="_") %>%
+      gt::tab_style(
+        style = gt::cell_text(align = "center"),
+        locations = gt::cells_column_labels()) %>%
+      gt::tab_spanner(label = md('**Row Totals**'), columns = dplyr::starts_with("zz"), level = 1, replace = TRUE) %>%
+      gt::cols_label(matches('freq') ~ 'Frequency',
+                     matches('n') ~ 'Count') %>%
+      gt::grand_summary_rows(columns = matches('n'),
+                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      gt::grand_summary_rows(columns = matches('freq'),
+                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+      gt::fmt_percent(columns = contains('freq'), decimals = 2)
+
+
+  }
+      return(gt.table)
+}
+
+
 #sc_table
 
 #' Summarize grouped counts and frequencies
@@ -171,61 +240,33 @@ singlechoice_table <- function(dataset, question, group_by = NULL,
                                               subgroups_to_exclude,
                                               if(!is.null(weights)){weights})
 
+  gt.table <- frequency_table(data.table = data.table,
+                              group_by =if(!is.null(group_by)){group_by})
 
+
+  #Add names to the table
   if(is.null(group_by)){
 
-    gt.table <-  data.table %>%
-      gt::gt(rowname_col = 'question') %>%
-      gt::tab_style(
-        style = gt::cell_text(align = "center"),
-        locations = gt::cells_column_labels()) %>%
-      gt::cols_label(matches('freq') ~ 'Frequency',
-                 matches('n') ~ 'Count') %>%
-      gt::grand_summary_rows(columns = matches('n'),
-                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
-      gt::grand_summary_rows(columns = matches('freq'),
-                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
-      gt::fmt_percent(columns = contains('freq'), decimals = 2) %>%
+    gt.table <- gt.table %>%
       gt::tab_header(
         title = paste0("Question: ", question))
 
-
-
   } else {
-    zztotal_n <- NULL
 
-    gt.table <-  data.table %>%
-      tidyr::pivot_wider(names_from=c(group_by),
-                         values_from=c(n,freq),
-                         names_glue = "{group_by}_{.value}",
-                         names_sort = TRUE) %>%
-
-      rowwise(question) %>%
-      mutate(zztotal_n = sum(c_across(ends_with('_n')))) %>%
-      ungroup() %>%
-      mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
-      select(question, sort(names(.))) %>%
-
-
-      gt::gt(rowname_col = 'question', groupname_col = 'group_by') %>%
-      gt::tab_spanner_delim(delim="_") %>%
-      gt::tab_style(
-        style = gt::cell_text(align = "center"),
-        locations = gt::cells_column_labels()) %>%
-      gt::tab_spanner(label = md('**Row Totals**'), columns = dplyr::starts_with("zz"), level = 1, replace = TRUE) %>%
-      gt::cols_label(matches('freq') ~ 'Frequency',
-                 matches('n') ~ 'Count') %>%
-      gt::grand_summary_rows(columns = matches('n'),
-                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
-      gt::grand_summary_rows(columns = matches('freq'),
-                         fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
-      gt::fmt_percent(columns = contains('freq'), decimals = 2)  %>%
+    gt.table <- gt.table %>%
       gt::tab_header(
         title = paste0("Question: ", question),
         subtitle = paste0("grouped by: ", group_by))
+
   }
 
 
+
+
+
+
+
+  #if therey're weights, add a note
   if(!is.null(weights)){
     gt.table <- gt.table %>%
       gt::tab_footnote(

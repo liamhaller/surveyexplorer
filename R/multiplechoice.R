@@ -32,7 +32,7 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
       #Both subgroup and weights
       !is.null(group_by) & !is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!group_by, !!weights),
       #Only group_by
-      !is.null(group_by) &  is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!group_by),
+      !is.null(group_by) & is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!group_by),
       #only weights
       is.null(group_by) & !is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!weights),
       #neither group_by nor weights
@@ -78,17 +78,24 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
       #no subgroup specified
       data.summary <- data.summary %>%
         tidyr::pivot_longer(-weights, names_to = 'question', values_to = 'response') %>%
-        group_by(question) %>%
+        dplyr::group_by(question) %>%
         count(response, wt = weights) %>%
-        mutate(freq = n/sum(n))
+        mutate(freq = n/sum(n)) %>%
+        ungroup()
+      colnames(data.summary) <- c('question', 'response', 'n', 'freq')
+
+
 
     } else {
       #subgroup specified
       data.summary <- data.summary %>%
         tidyr::pivot_longer(-c(weights, !!group_by), names_to = 'question', values_to = 'response') %>%
-        group_by(question, !!group_by) %>%
+        dplyr::group_by(question, !!group_by) %>%
         count(response, wt = weights) %>%
-        mutate(freq = n/sum(n))
+        mutate(freq = n/sum(n)) %>%
+        ungroup()
+
+      colnames(data.summary) <- c('question', 'group_by', 'response', 'n', 'freq')
 
     }
 
@@ -102,9 +109,8 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
 
 #' Title
 #'
-#'
-#' @inheritParams singlechoice_summary
 #' @inheritParams multichoice_summary
+#' @inheritParams singlechoice_summary
 #'
 #' @return placehodler
 #' @export
@@ -118,7 +124,6 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
       call. = FALSE
     )
   }
-
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
@@ -184,9 +189,9 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
       as_tibble(rownames = "respondent") %>%
       tidyr::pivot_longer(-c(respondent, weights) , names_to = 'question') %>%
       filter(value != 0) %>%
-      group_by(respondent, weights) %>%
+      dplyr::group_by(respondent, weights) %>%
       summarize(question = list(question)) %>%
-      group_by(question) %>%
+      dplyr::group_by(question) %>%
       summarise(count = round(sum(weights),0)) %>%
       tidyr::uncount(count) %>%
       ggplot2::ggplot(aes(x = question)) +
@@ -205,9 +210,9 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
       as_tibble(rownames = "respondent") %>%
       tidyr::pivot_longer(-c(respondent, !!group_by, weights) , names_to = 'question') %>%
       filter(value != 0) %>%
-      group_by(respondent, !!group_by, weights) %>%
+      dplyr::group_by(respondent, !!group_by, weights) %>%
       summarize(question = list(question)) %>%
-      group_by(question, !!group_by) %>%
+      dplyr::group_by(question, !!group_by) %>%
       summarise(count = round(sum(weights),0)) %>%
       tidyr::uncount(count) %>%
       ggplot2::ggplot(aes(x = question, fill = !!group_by)) +
@@ -234,13 +239,68 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
 
 
 
-
-
-
-
-
-
 #mc table
+
+#' Title
+#' @inheritParams multichoice_summary
+#'
+#' @return gt table
+#' @export
+#'
+multichoice_table <- function(dataset, question, group_by = NULL,
+                              subgroups_to_exclude = NULL, weights = NULL){
+
+
+  try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
+  try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
+
+  data.table <- multichoice_summary(dataset = dataset,
+                                    question =  all_of(question),
+                                    group_by =   if(!is.null(group_by)){group_by},
+                                    subgroups_to_exclude =  subgroups_to_exclude,
+                                    weights =   if(!is.null(weights)){weights})
+
+
+    #only include 'selected' counts
+    data.table <- data.table %>%
+    filter(response != 0) %>%
+    select(-response)
+
+
+  #create base of table
+  gt.table <- frequency_table(data.table = data.table,
+                              group_by =if(!is.null(group_by)){group_by})
+
+
+
+  #Add names to the table
+  if(is.null(group_by)){
+
+    gt.table <- gt.table %>%
+      gt::tab_header(
+        title = paste0("Question: ", question))
+
+  } else {
+
+    gt.table <- gt.table %>%
+      gt::tab_header(
+        title = paste0("Question: ", question),
+        subtitle = paste0("grouped by: ", group_by))
+
+  }
+
+
+  #if therey're weights, add a note
+  if(!is.null(weights)){
+    gt.table <- gt.table %>%
+      gt::tab_footnote(
+        footnote = "Frequencies and counts are weighted") %>%
+      gt::fmt_number(columns = contains('n'), decimals = 1)
+
+  }
+  return(gt.table)
+}
+
 
 
 

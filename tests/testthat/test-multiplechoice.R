@@ -36,4 +36,17 @@ test_that("Graph: subgroup, weights", {
 })
 
 
+# Table -------------------------------------------------------------------
+
+test_that("Table: columns only", {
+  expect_no_error(multichoice_table(berlinbears, question = starts_with('will_eat')))
+})
+
+test_that("Table: subgroup", {
+  expect_no_error(multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = species))
+})
+
+test_that("Table: subgroup, weights", {
+  expect_no_error(multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = gender, weights = weights))
+})
 

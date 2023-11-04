@@ -94,8 +94,7 @@ test_that("table, question with group_by, weights, and exclusion", {
 })
 
 
-
-
-
+singlechoice_table(berlinbears, question = income,
+                   group_by = gender)
 
 
