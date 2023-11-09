@@ -144,7 +144,7 @@ singlechoice_graph <- function(dataset, question, group_by = NULL,
 
 
 
-#' Title
+#' Base table for single & multipe choice questions
 #'
 #' @param data.table Output from either mutli or single summary
 #' @inheritParams singlechoice_summary
@@ -261,11 +261,6 @@ singlechoice_table <- function(dataset, question, group_by = NULL,
   }
 
 
-
-
-
-
-
   #if therey're weights, add a note
   if(!is.null(weights)){
     gt.table <- gt.table %>%
@@ -276,7 +271,6 @@ singlechoice_table <- function(dataset, question, group_by = NULL,
   }
   return(gt.table)
   }
-
 
 
 

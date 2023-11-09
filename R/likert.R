@@ -7,7 +7,6 @@
 #'
 #' @return A dataframe of percentages corresponding to the share of each category
 #'
-#' @export
 #'
 
 likert_summary <- function(data, low_is_agree = FALSE, order_rows = FALSE){
@@ -95,6 +94,29 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
                          colors =  c("#d73027","#E36A64","#FEEBD7", "#8ECF8C", "#66bd63")){
 
 
+
+  ## Data Selection ##
+  #Evaluate users selection and select from data
+  data.question <-
+    tidyselect::eval_select(
+      expr = rlang::enquo(question),
+      data = dataset)
+
+  #Select data from dataframe with optional group_by/weights if provided
+  data.summary <- case_when(
+    #Both subgroup and weights
+    !is.null(group_by) & !is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!group_by, !!weights),
+    #Only group_by
+    !is.null(group_by) & is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!group_by),
+    #only weights
+    is.null(group_by) & !is.null(weights) ~ dataset %>%  dplyr::select(all_of(data.question),!!weights),
+    #neither group_by nor weights
+    TRUE ~ dataset %>%  dplyr::select(all_of(data.question))
+  )
+
+
+
+
   #TODO
   #check if number of colors is same as number of levels
 
@@ -157,7 +179,7 @@ likert_graph <- function(data, labels = c("Strongly disagree", 'Disagree','Neutr
 
   graph.likert <- ggplot2::ggplot() +
     ggplot2::geom_bar(data=data.low, aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
-             ,stat="identity", position = ggplot2::position_stack(reverse = FALSE)) +
+             ,stat="identity", position = ggplot2::position_stacksssssssssssss(reverse = FALSE)) +
     ggplot2::geom_bar(data=data.high , aes(x = factor(Item, levels = row_order), y=value, fill = factor(doublemiddle_label, levels = labels))
              ,stat="identity", position = ggplot2::position_stack(reverse = TRUE)) +
     ggplot2::geom_hline(yintercept = 0, linewidth = 2, color =c("white")) +

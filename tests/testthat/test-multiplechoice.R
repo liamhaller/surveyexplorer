@@ -24,7 +24,9 @@ test_that("Input: Tidyselect columns, subgroup, weights", {
 
 
 test_that("Graph: columns only", {
-  expect_no_error(multichoice_graph(berlinbears, question = starts_with('will_eat')))
+  expect_no_error(
+    multichoice_graph(berlinbears, question = starts_with('will_eat'))
+    )
 })
 
 test_that("Graph: subgroup", {

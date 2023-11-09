@@ -65,7 +65,7 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
           stop('Levels to exclude not found within group_by variable')
         }
       }
-      tabled.question <- data.summary %>%
+      data.summary <- data.summary %>%
         filter(!!group_by %ni% subgroups_to_exclude)}
 
     ## Compute Frequencies ##
@@ -182,7 +182,6 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
       filter(!!group_by %ni% subgroups_to_exclude)}
 
 
-
   if(is.null(group_by)){
   #no subgroup
     mc_upset <- data.summary %>%
@@ -296,7 +295,6 @@ multichoice_table <- function(dataset, question, group_by = NULL,
       gt::tab_footnote(
         footnote = "Frequencies and counts are weighted") %>%
       gt::fmt_number(columns = contains('n'), decimals = 1)
-
   }
   return(gt.table)
 }
