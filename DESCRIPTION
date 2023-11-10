@@ -1,10 +1,10 @@
 Package: dezim
-Title: Quickly visualize and tabulate complex survey data
+Title: Quickly summarize complex survey data
 Version: 0.0.0.9000
 Authors@R: 
-    person("Liam", "Haller", , "haller@dezim-institut.de", role = c("aut", "cre"),
+    person("Liam", "Haller", , "haller@dezim-institut.de", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8033-6599"))
-Description: Descriptive overview of entire survey 
+Description: Visualize and tabulate  
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)

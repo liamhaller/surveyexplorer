@@ -3,7 +3,9 @@
 #Data input
 
 test_that("Input: Columns only", {
-  expect_no_error(multichoice_summary(berlinbears, question = 2:3))
+  expect_no_error(
+    multichoice_summary(berlinbears, question = 2:3)
+    )
 })
 
 test_that("Input: Tidyselect columns", {
@@ -49,6 +51,9 @@ test_that("Table: subgroup", {
 })
 
 test_that("Table: subgroup, weights", {
-  expect_no_error(multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = gender, weights = weights))
+  expect_no_error(
+    multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = gender, weights = weights)
+    )
 })
+
 

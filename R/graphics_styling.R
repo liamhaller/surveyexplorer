@@ -32,7 +32,7 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
       stop("The Calibri font is not installed on your machine, please install it and try again or set: Calibri = FALSE")
     }
 
-    theme(
+    ggplot2::theme(
       ### Text ###
       #154a39
       #4d4d4d
@@ -63,7 +63,7 @@ dezim_style <- function(calibri = FALSE, title_size = 16, sub_title_size = 14, x
 
   }  else {
 
-    theme(
+    ggplot2::theme(
       ### Text ###
       #154a39
       #4d4d4d

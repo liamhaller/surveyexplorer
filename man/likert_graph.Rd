@@ -5,17 +5,17 @@
 \title{Quickly plot likert data (3,5,7,9 levels)}
 \usage{
 likert_graph(
-  data,
+  dataset,
+  question,
   labels = c("Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agre"),
-  colors = c("#d73027", "#E36A64", "#FEEBD7", "#8ECF8C", "#66bd63")
+  colors = c("#d73027", "#E36A64", "#FEEBD7", "#8ECF8C", "#66bd63", weights)
 )
 }
 \arguments{
-\item{data}{Summerized likert data (first column must be names)}
+\item{dataset}{Dataframe or a tibble containing the \code{question} column to be analyzed}
 
-\item{colors}{example text}
-
-\item{levels}{example text}
+\item{question}{The columns that contain each of the response options, can be selected by
+using \strong{tidyselect} semanlatics or providing a vector of column names or numbers}
 }
 \value{
 example return

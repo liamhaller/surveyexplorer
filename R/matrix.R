@@ -55,9 +55,9 @@ matrix_table <- function(dataset,
       gt::tab_style(
         style = gt::cell_text(align = "center"),
         locations = gt::cells_column_labels()) %>%
-      tab_style(
-          style = cell_text(weight = "bold"),
-          locations = cells_row_groups())
+      gt::tab_style(
+          style = gt::cell_text(weight = "bold"),
+          locations = gt::cells_row_groups())
 
 
   }
@@ -105,7 +105,7 @@ if(is.null(group_by)){
   #no subgroups
   data.table <- data.table %>%
     group_by(question) %>%
-    uncount(n) %>%
+    tidyr::uncount(n) %>%
     summarise(
       mean = mean(response),
       sd = sd(response),
@@ -113,28 +113,22 @@ if(is.null(group_by)){
       se = sd / sqrt(n()))
 
   graph.likert_mean <- ggplot(data.table, aes(x= factor(question), y=mean)) +
-    geom_point(size = 2) +
-    geom_errorbar(aes(ymin=mean - 2*se ,ymax=mean + 2*se),width=0, linewidth =1) +
-    coord_flip() +
+    ggplot2::geom_point(size = 2) +
+    ggplot2::geom_errorbar(aes(ymin=mean - 2*se ,ymax=mean + 2*se),width=0, linewidth =1) +
+    ggplot2::coord_flip() +
     #shape of the graph
-    ylim(1,5) +
 
     #text
-    labs(subtitle = "",
+    ggplot2::labs(subtitle = "",
          title = "",
          y = '',
-         x = "") +
-    #styling
-    #scale_color_manual() +
-    dezim::dezim_style() +
-    theme(legend.position="bottom")+
-    theme(legend.title=element_blank())
+         x = "")
 
   } else{
 
   data.table <- data.table %>%
     group_by(question, group_by) %>%
-    uncount(n) %>%
+    tidyr::uncount(n) %>%
     summarise(
       mean = mean(response),
       sd = sd(response),
@@ -142,23 +136,17 @@ if(is.null(group_by)){
       se = sd / sqrt(n()))
 
   graph.likert_mean <- ggplot(data.table, aes(x= factor(question), y=mean, color = group_by)) +
-    geom_point(size = 2, position = position_dodge(width=0.5)) +
-    geom_errorbar(aes(ymin=mean - 2*se ,ymax=mean + 2*se),
-                  width=0, linewidth =1, position = position_dodge(width=0.5)) +
-    coord_flip() +
+    ggplot2::geom_point(size = 2, position = ggplot2::position_dodge(width=0.5)) +
+    ggplot2::geom_errorbar(aes(ymin=mean - 2*se ,ymax=mean + 2*se),
+                  width=0, linewidth =1, position = ggplot2::position_dodge(width=0.5)) +
+    ggplot2::coord_flip() +
     #shape of the graph
-    ylim(1,5) +
 
     #text
-    labs(subtitle = "",
+    ggplot2::labs(subtitle = "",
          title = "",
          y = '',
-         x = "") +
-    #styling
-    #scale_color_manual() +
-    dezim::dezim_style() +
-    theme(legend.position="bottom")+
-    theme(legend.title=element_blank())
+         x = "")
 
   }
 return(graph.likert_mean)

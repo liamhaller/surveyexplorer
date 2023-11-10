@@ -7,7 +7,7 @@
 #'
 #' @inheritParams singlechoice_summary
 #' @param question The columns that contain each of the response options, can be selected by
-#' using **tidyselect** semanlatics or providing a vector of column names or numbers
+#' using **tidyselect** semanatics or providing a vector of column names or numbers
 #'
 #' @return placehodler
 #' @export
@@ -105,7 +105,6 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
 }
 
 
-#mc graph
 
 #' Title
 #'
@@ -238,7 +237,6 @@ multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_e
 
 
 
-#mc table
 
 #' Title
 #' @inheritParams multichoice_summary

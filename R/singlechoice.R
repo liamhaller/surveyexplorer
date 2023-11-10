@@ -24,7 +24,6 @@ singlechoice_summary <- function(dataset, question, group_by = NULL,
   #function to identify what to exclude rather than what to include
   `%ni%` <- Negate(`%in%`)
 
-
   ## Data pre-processing ##
   #if weights are not specified create vector of 1s
   if(is.null(weights)){
@@ -141,9 +140,6 @@ singlechoice_graph <- function(dataset, question, group_by = NULL,
 
 
 
-
-
-
 #' Base table for single & multipe choice questions
 #'
 #' @param data.table Output from either mutli or single summary
@@ -164,12 +160,12 @@ frequency_table <- function(data.table, group_by){
       gt::tab_style(
         style = gt::cell_text(align = "center"),
         locations = gt::cells_column_labels()) %>%
-      gt::cols_label(matches('freq') ~ 'Frequency',
-                     matches('n') ~ 'Count') %>%
+      gt::cols_label(ends_with('_freq') ~ 'Frequency',
+                     ends_with('_n') ~ 'Count') %>%
       gt::grand_summary_rows(columns = matches('n'),
-                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
       gt::grand_summary_rows(columns = matches('freq'),
-                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
+                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
       gt::fmt_percent(columns = contains('freq'), decimals = 2)
 
 
@@ -188,21 +184,54 @@ frequency_table <- function(data.table, group_by){
       mutate(zztotal_n = sum(c_across(ends_with('_n')))) %>%
       ungroup() %>%
       mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
-      select(question, sort(names(.))) %>%
+      select(question, sort(names(.)))
+
+    sample_size <- sum(data.table$n)
+
+
+    columnwise_total <-
+      gt.table %>%
+      select(ends_with('_n')) %>%
+      purrr::map_df(sum) %>%
+      mutate(
+        across(.cols = everything(),
+               .fns = function(x) {x/sample_size},
+               .names = "{str_extract(.col, pattern = '[^_]*')}_freq")
+      ) %>%
+      select(sort(names(.))) %>%
+      mutate(question = "Columnwise Total", .before = everything())
+
+
+    gt.table <- gt.table %>%
+      add_row(columnwise_total) %>%
 
       gt::gt(rowname_col = 'question', groupname_col = 'group_by') %>%
       gt::tab_spanner_delim(delim="_") %>%
       gt::tab_style(
         style = gt::cell_text(align = "center"),
         locations = gt::cells_column_labels()) %>%
-      gt::tab_spanner(label = md('**Row Totals**'), columns = dplyr::starts_with("zz"), level = 1, replace = TRUE) %>%
-      gt::cols_label(matches('freq') ~ 'Frequency',
-                     matches('n') ~ 'Count') %>%
-      gt::grand_summary_rows(columns = matches('n'),
-                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
-      gt::grand_summary_rows(columns = matches('freq'),
-                             fns =  list(label = md('**Column Totals**'), id = "totals", fn = "sum")) %>%
-      gt::fmt_percent(columns = contains('freq'), decimals = 2)
+      gt::tab_spanner(label = md('**Rowwise Total**'),
+                      columns = dplyr::starts_with("zz"),
+                      level = 1,
+                      replace = TRUE,
+                      id = 'rowwise'
+      ) %>%
+      gt::cols_label(ends_with('_freq') ~ 'Frequency',
+                     ends_with('_n') ~ 'Count') %>%
+      gt::fmt_percent(columns = contains('freq'), decimals = 2) %>%
+
+      #Styling#
+      #Make summary rows grey
+      gt::tab_style(gt::cell_fill(color = '#d3d3d3'),
+                    locations = list(
+                      gt::cells_body(columns = dplyr::starts_with("zz")),
+                      gt::cells_body(rows = dplyr::matches("Columnwise Total"))
+                    )) %>%
+      #Bold "columnwise total"
+      gt::tab_style(gt::cell_text(weight = 'bold'),
+                    locations = gt::cells_stub(rows = "Columnwise Total")
+      )
+
 
 
   }
@@ -242,7 +271,6 @@ singlechoice_table <- function(dataset, question, group_by = NULL,
 
   gt.table <- frequency_table(data.table = data.table,
                               group_by =if(!is.null(group_by)){group_by})
-
 
   #Add names to the table
   if(is.null(group_by)){
