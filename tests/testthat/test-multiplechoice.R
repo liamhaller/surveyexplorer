@@ -20,6 +20,11 @@ test_that("Input: Tidyselect columns, subgroup, weights", {
   expect_no_error(multichoice_summary(berlinbears, question = starts_with('will_eat'), group_by = gender, weights = weights))
 })
 
+test_that("Input: excluded subgroup without group_by", {
+  expect_error(multichoice_summary(berlinbears, question = starts_with('will_eat'),  subgroups_to_exclude = 'panda'))
+})
+
+
 
 # Graphs ------------------------------------------------------------------
 
@@ -50,10 +55,16 @@ test_that("Table: subgroup", {
   expect_no_error(multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = species))
 })
 
-test_that("Table: subgroup, weights", {
+test_that("Table: subgroup, weights, exclude NA", {
   expect_no_error(
-    multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = gender, weights = weights)
+    multichoice_table(berlinbears, question = starts_with('will_eat'), group_by = gender, subgroups_to_exclude = NA, weights = weights)
     )
 })
+
+
+
+
+
+
 
 

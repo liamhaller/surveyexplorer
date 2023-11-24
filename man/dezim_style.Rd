@@ -5,7 +5,6 @@
 \title{DeZIM Graphics Style}
 \usage{
 dezim_style(
-  calibri = FALSE,
   title_size = 16,
   sub_title_size = 14,
   x_axis_title_size = 14,
@@ -16,8 +15,6 @@ dezim_style(
 )
 }
 \arguments{
-\item{calibri}{Use calibri as font family}
-
 \item{title_size}{Size of title}
 
 \item{sub_title_size}{Size of subtitle}

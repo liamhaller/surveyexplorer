@@ -66,7 +66,7 @@ return(matrix.table)
 }
 
 
-# Matrix Graph ------------------------------------------------------------
+# Matrix Graphs ------------------------------------------------------------
 
 
 #' Title
@@ -156,6 +156,53 @@ return(graph.likert_mean)
 
 
 
+
+# Frequency graph ---------------------------------------------------------
+
+
+matrixgraph_freq <- function(dataset,
+                             question,
+                             group_by = NULL,
+                             subgroups_to_exclude = NULL,
+                             weights = NULL){
+
+
+  try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
+  try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
+
+  data.table <- multichoice_summary(dataset = dataset,
+                                    question =  all_of(question),
+                                    group_by =   if(!is.null(group_by)){group_by},
+                                    subgroups_to_exclude =  subgroups_to_exclude,
+                                    weights =   if(!is.null(weights)){weights})
+
+
+
+}
+
+
+
+
+# #
+#  data.table <- multichoice_summary(berlinbears, dplyr::starts_with('p'))
+#
+#
+# ggplot(data.table, aes(x= question, y = freq, fill = response, label = scales::percent(freq))) +
+#   geom_bar(stat = 'identity' ) +
+#   ggplot2::geom_text( position = ggplot2::position_fill(vjust = .5), check_overlap = TRUE,   size = 3.3) +
+#   coord_flip() +
+#   ggplot2::labs(subtitle = "",
+#                 title = "",
+#                 y = '',
+#                 x = "",
+#                 fill = "")
+#
+#
+# # %>%
+#   dplyr::select(-n) %>%
+#   tidyr::pivot_wider(names_from=c(response),
+#                      values_from=c(freq),
+#                      names_prefix = 'l_')
 
 
 

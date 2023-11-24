@@ -41,6 +41,13 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
 
 
     ## Data pre-processing ##
+    if(is.null(group_by) & !is.null(subgroups_to_exclude)){
+      stop('Cannot specify `subgroups_to_exclude` without `group_by`.
+           Please remove `subgroups_to_exclude` or specify a grouping variable')
+
+    }
+
+
     #if weights are not specified create vector of 1s
     if(is.null(weights)){
       data.summary$weights <- 1
@@ -117,12 +124,7 @@ multichoice_summary <- function(dataset, question, group_by = NULL, subgroups_to
 multichoice_graph <- function(dataset, question, group_by = NULL, subgroups_to_exclude = NULL, weights = NULL){
 
   #ggupset required to make graph, but only used in this function
-  if (!requireNamespace("ggupset", quietly = TRUE)) {
-    stop(
-      "Package \"ggupset\" must be installed to use this function.",
-      call. = FALSE
-    )
-  }
+  rlang::check_installed("ggupset")
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail

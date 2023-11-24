@@ -1,4 +1,7 @@
 
+
+
+
 #' Summarize count and frequency of a single choice survey question
 #'
 #' @param dataset Dataframe or a tibble containing the `question` column to be analyzed
@@ -15,6 +18,13 @@ singlechoice_summary <- function(dataset, question, group_by = NULL,
                                  subgroups_to_exclude = NULL, weights = NULL){
 
 
+
+
+
+
+
+
+
   #Inputs to symbols to use with dplyr syntax
   question <- rlang::ensym(question)
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
@@ -25,21 +35,38 @@ singlechoice_summary <- function(dataset, question, group_by = NULL,
   `%ni%` <- Negate(`%in%`)
 
   ## Data pre-processing ##
+  if(is.null(group_by) & !is.null(subgroups_to_exclude)){
+    stop('Cannot specify `subgroups_to_exclude` without `group_by`.
+           Please remove `subgroups_to_exclude` or specify a grouping variable')
+
+  }
+
   #if weights are not specified create vector of 1s
   if(is.null(weights)){
     dataset$weights <- 1
     #if weights are specified, rename column to weights
     #necessary since weights column will always be selected
   } else {
+    if(!is.numeric(dataset %>% pull(!!weights)))
+      {stop('Please enter numeric vector for weights')}
     dataset <- dataset %>% rename(weights = !!weights)
 
   }
 
   #select group_by, if specified
   if(is.null(group_by)){
-    tabled.question <-  dataset %>% select(!!question, weights)
+    tabled.question <-  dataset %>% select(!!question, weights) %>%
+      #question need to be converted to factors and NAs added as levels
+      #so that count(..., .drop = FALSE) will keep zero rows
+      mutate(across(c(!!question), ~  addNA(.x, ifany = TRUE) ))
+
   } else {
-    tabled.question <-  dataset %>% select(!!question, !!group_by, weights)
+
+    tabled.question <-  dataset %>%
+      select(!!question, !!group_by, weights) %>%
+      #question and group_by need to be converted to factors and NAs added as levels
+      #so that count(..., .drop = FALSE) will keep zero rows
+      mutate(across(c(!!question, !!group_by), ~  addNA(.x, ifany = TRUE) ))
   }
 
   #filter variables to exclude, if specified
@@ -57,22 +84,30 @@ singlechoice_summary <- function(dataset, question, group_by = NULL,
       }
     }
     tabled.question <- tabled.question %>%
-      filter(!!group_by %ni% subgroups_to_exclude)}
+      filter(!!group_by %ni% subgroups_to_exclude) %>%
+      droplevels() #drop (now) unused levels from variable
+    #otherwise they would appear because of count(..., .drop = FALSE)
 
+
+    }
+
+
+
+  ## Sumerize data ##
   #compute dataset with and without group_by sepereatly
   n <- NULL #variable is created using NSE
   if(!is.null(group_by)){
     tabled.question <-  tabled.question %>%
-      dplyr::group_by(!!question, !!group_by) %>%
+      dplyr::group_by(!!question, !!group_by, .drop = FALSE) %>%
       count(!!question, wt = weights, name = 'n') %>%
-      dplyr::group_by(!!group_by) %>%
+      dplyr::group_by(!!group_by, .drop = FALSE) %>%
       mutate(freq = .data$n/sum(.data$n))
 
     colnames(tabled.question) <- c('question', 'group_by', 'n', 'freq')
 
   } else {
     tabled.question <- tabled.question %>%
-      dplyr::group_by(!!question) %>%
+      dplyr::group_by(!!question, .drop = FALSE) %>%
       count(!!question, wt = weights, name = 'n') %>%
       ungroup() %>%
       mutate(freq = n/sum(n))
@@ -144,7 +179,7 @@ singlechoice_graph <- function(dataset, question, group_by = NULL,
 #'
 #' @param data.table Output from either mutli or single summary
 #' @inheritParams singlechoice_summary
-#'
+#' @importFrom stringr str_extract
 #' @return Gt table
 #'
 frequency_table <- function(data.table, group_by){
@@ -181,7 +216,7 @@ frequency_table <- function(data.table, group_by){
                          names_sort = TRUE) %>%
 
       rowwise(question) %>%
-      mutate(zztotal_n = sum(c_across(ends_with('_n')))) %>%
+      mutate(zztotal_n = sum(c_across(ends_with('_n')), na.rm = TRUE)) %>%
       ungroup() %>%
       mutate(zztotal_freq = zztotal_n/sum(zztotal_n)) %>%
       select(question, sort(names(.)))
@@ -218,10 +253,10 @@ frequency_table <- function(data.table, group_by){
       ) %>%
       gt::cols_label(ends_with('_freq') ~ 'Frequency',
                      ends_with('_n') ~ 'Count') %>%
-      gt::fmt_percent(columns = contains('freq'), decimals = 2) %>%
 
       #Styling#
       #Make summary rows grey
+      gt::fmt_percent(columns = contains('freq'), decimals = 2) %>%
       gt::tab_style(gt::cell_fill(color = '#d3d3d3'),
                     locations = list(
                       gt::cells_body(columns = dplyr::starts_with("zz")),
@@ -299,7 +334,6 @@ singlechoice_table <- function(dataset, question, group_by = NULL,
   }
   return(gt.table)
   }
-
 
 
 

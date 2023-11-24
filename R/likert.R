@@ -10,8 +10,9 @@
 #'
 likert_graph <- function(dataset,
                          question,
-                         labels = c('Strongly disagree', 'Disagree','Neutral','Agree','Strongly agree'),
-                         colors =  c("#d73027","#E36A64","#FEEBD7", "#8ECF8C", "#66bd63"),
+                         na.rm = TRUE,
+                         labels = NULL,
+                         colors = NULL,
                          weights = NULL){
 
 
@@ -23,10 +24,80 @@ likert_graph <- function(dataset,
 
   data.table <- multichoice_summary(dataset = dataset,
                                     question =  all_of(question),
-                                    group_by =   if(!is.null(group_by)){group_by},
-                                    subgroups_to_exclude =  subgroups_to_exclude,
                                     weights =   if(!is.null(weights)){weights})
 
+
+
+  ### Preprocessing ###
+  #Default is yes or else it would be an additional category
+  if(na.rm == TRUE){
+    data.table <- data.table %>%
+      filter(!is.na(response))
+  }
+
+  #Number of categories present in the data
+  no_categories <- length(unique(data.table$response))
+
+  #if there is an even number of categories passed
+  if((no_categories %% 2) == 0) {
+    stop('Only an odd number of categories accepted. Try `matrixgraph_freq` instead')
+  }
+
+  #Default colors for 3,5 categories
+  if(is.null(colors)){
+
+    if(no_categories == 3){
+      colors <-  c("#E36A64","#FEEBD7", "#8ECF8C")
+    } else if(no_categories == 5){
+      colors <- c("#d73027","#E36A64","#FEEBD7", "#8ECF8C", "#66bd63")
+    } else {
+      stop('Please specify a vector of colors')
+    }
+  }
+
+  # if no labels are passed, create labels from original data
+  if(is.null(labels)){
+    #what class of data was originally passed (data.table. only returns character b/c count function)
+    data.question <- tidyselect::eval_select(
+        expr = rlang::enquo(question),
+        data = dataset)
+
+    original_class <- dataset %>%
+      dplyr::select(all_of(data.question)) %>%
+      purrr::map(class) %>%
+      unique() %>%
+      unlist()
+
+   if(original_class == "numeric"){
+
+     labels <- data.table %>%
+       dplyr::pull(response) %>%
+       unique() %>%
+       as.numeric() %>%
+       sort()
+
+   } else if(original_class == "factor"){
+
+     labels <- dataset %>%
+       dplyr::select(all_of(data.question)) %>%
+       purrr::map(levels) %>%
+       unique() %>%
+       unlist()
+
+   } else if(original_class == 'character') {
+      stop('Must specify labels argument if data is class "character"')
+    }
+  #labels argument is provided
+  } else {
+    #Check to make sure number of labels passed matches number of categories
+    if(no_categories != length(labels)){
+      stop('The number of labels provided does not mach the number of categories')
+    }
+  }
+
+
+  ## Transforom data ##
+  #summerize each category by frequency
   data.table <- data.table %>%
     dplyr::select(-n) %>%
     tidyr::pivot_wider(names_from=c(response),
@@ -34,12 +105,9 @@ likert_graph <- function(dataset,
                        names_prefix = 'l_')
 
 
-
-  #TODO
-  #check if number of colors is same as number of levels
+  ## Build Graph ##
 
   numlabels <- length(labels)
-
   colnames(data.table) <- c('Item', labels)
 
   #Split the middle column in half in the graph

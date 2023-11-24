@@ -7,15 +7,19 @@
 likert_graph(
   dataset,
   question,
-  labels = c("Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agre"),
-  colors = c("#d73027", "#E36A64", "#FEEBD7", "#8ECF8C", "#66bd63", weights)
+  na.rm = TRUE,
+  labels = NULL,
+  colors = NULL,
+  weights = NULL
 )
 }
 \arguments{
 \item{dataset}{Dataframe or a tibble containing the \code{question} column to be analyzed}
 
 \item{question}{The columns that contain each of the response options, can be selected by
-using \strong{tidyselect} semanlatics or providing a vector of column names or numbers}
+using \strong{tidyselect} semanatics or providing a vector of column names or numbers}
+
+\item{weights}{Optional column containing survey weights}
 }
 \value{
 example return

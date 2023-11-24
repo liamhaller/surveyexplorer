@@ -16,7 +16,7 @@ multichoice_table(
 \item{dataset}{Dataframe or a tibble containing the \code{question} column to be analyzed}
 
 \item{question}{The columns that contain each of the response options, can be selected by
-using \strong{tidyselect} semanlatics or providing a vector of column names or numbers}
+using \strong{tidyselect} semanatics or providing a vector of column names or numbers}
 
 \item{group_by}{Name of column in \code{dataset} used to partition the analysis into subgroups}
 
