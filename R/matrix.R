@@ -1,16 +1,42 @@
 
 
-#' Tabulate Array/Matrix questions
+#' Create a table of frequencies and counts for matrix questions
+#'
+#' This function creates a table showing percentages and counts for each
+#' response option in a multiple-choice question, specified by `question`. If
+#' grouping is provided with `group_by`, the table is extended to include
+#' subgroups. Subgroups can be excluded, and survey weights are supported for
+#' adjusted counts. The table is formatted for clarity and can be displayed in
+#' wide format. When weights are used, counts are presented as percentages only,
+#' and a note is added at the bottom of the table.
 #'
 #' @inheritParams multi_summary
 #'
-#' @return placeholder
+#' @return  A gt table summarizing percentages and counts for each response
+#'   option in the specified multiple-choice question. If grouping is provided,
+#'   the table includes subgroups and is formatted for clarity.
+#'
+#'  @examples
+#'   #Array question (1-5)
+#'   matrix_table(berlinbears, dplyr::starts_with('p_'))
+#'
+#'   #Use `group_by` to partition the question into several groups
+#'   matrix_table(berlinbears, dplyr::starts_with('p_'), group_by = species,
+#'   subgroups_to_exclude = 'panda bear' )
+#'
+#'   #Remove NA category
+#'   matrix_table(berlinbears, dplyr::starts_with('p_'), group_by = species,
+#'   subgroups_to_exclude = 'panda bear', na.rm = TRUE
+#'
+#'   #Categorical input
+#'   matrix_table(berlinbears, dplyr::starts_with('c_'), group_by = is_parent)
+#'
+#'
 #' @importFrom dplyr n
 #' @export
 #'
 #'
 #' @family matrix questions
-
 #'
 matrix_table <- function(dataset,
                          question,
@@ -79,12 +105,28 @@ return(matrix.table)
 
 #' Matrix Mean Plot
 #'
-#' Visualizes the mean and standard deviation of responses to a specified question.
-#' If grouping is specified, the plot compares the means across different groups.
+#' This function creates a likert-style plot showing means and standard errors
+#' for a specified numeric variable, `question`. Optionally, the plot can be
+#' grouped by another variable, `group_by`, and subgroups can be excluded. If
+#' survey weights are provided, the counts are adjusted accordingly. The plot is
+#' flipped for better readability in likert-style format.
 #'
 #' @inheritParams multi_summary
 #'
-#' @return A ggplot object representing the mean plot.
+#' @return A likert-style ggplot displaying means and standard errors. The plot
+#'   is flipped for better readability, and if grouping is specified, different
+#'   colors represent distinct subgroups.
+#'
+#' @examples
+#' #basic plot
+#'   matrix_mean(berlinbears, dplyr::starts_with('p_'))
+#'
+#'  #with grouping and weights
+#'    matrix_mean(berlinbears, dplyr::starts_with('p_'), group_by = species,
+#'    subgroups_to_exclude = 'panda bear', weights = weights, na.rm = TRUE )
+#'
+#'
+#'
 #' @export
 #' @family matrix questions
 
@@ -136,7 +178,7 @@ if(is.null(group_by)){
     ggplot2::labs(subtitle = "",
          title = "",
          y = '',
-         x = "")
+         x = "", color = "")
 
   } else{
 
@@ -160,7 +202,7 @@ if(is.null(group_by)){
     ggplot2::labs(subtitle = "",
          title = "",
          y = '',
-         x = "")
+         x = "", color = '')
 
   }
 return(graph.likert_mean)
@@ -189,6 +231,20 @@ return(graph.likert_mean)
 #'
 #' @return A ggplot2 object representing a grouped bar chart displaying the frequency distribution of responses
 #' for the specified categorical variable. The chart supports grouping, weighting, and exclusion of subgroups.
+#' @examples
+#'  #Array question (1-5)
+#'   matrix_freq(berlinbears, dplyr::starts_with('p_'))
+#'
+#'   #remove NA category
+#'   matrix_freq(berlinbears, dplyr::starts_with('p_'), na.rm = TRUE)
+#'
+#'   #Use `group_by` to partition the question into several groups
+#'   matrix_freq(berlinbears, dplyr::starts_with('p_'), group_by = species,
+#'   subgroups_to_exclude = c('panda bear', NA ), na.rm = TRUE)
+#'
+#'   #Categorical input
+#'   matrix_freq(berlinbears, dplyr::starts_with('c_'), group_by = is_parent, na.rm = TRUE)
+#'
 #'
 #'
 #' @export
@@ -226,9 +282,16 @@ matrix_freq <- function(dataset,
                   title = "",
                   y = '',
                   x = "",
-                  fill = "") +
-   ggplot2::facet_wrap(~group_by, scales = "fixed", ncol = 2) +
+                  fill = "")+
    ggplot2::theme_minimal()
+
+
+ if(!is.null(group_by)){
+   graph.freq <- graph.freq +
+     ggplot2::facet_wrap(~group_by, scales = "fixed", ncol = 2)
+
+ }
+
 
 
 

@@ -33,11 +33,27 @@ frequencies and counts will be weighted accordingly.}
 before analysis.}
 }
 \value{
-A ggplot object representing the mean plot.
+A likert-style ggplot displaying means and standard errors. The plot
+is flipped for better readability, and if grouping is specified, different
+colors represent distinct subgroups.
 }
 \description{
-Visualizes the mean and standard deviation of responses to a specified question.
-If grouping is specified, the plot compares the means across different groups.
+This function creates a likert-style plot showing means and standard errors
+for a specified numeric variable, \code{question}. Optionally, the plot can be
+grouped by another variable, \code{group_by}, and subgroups can be excluded. If
+survey weights are provided, the counts are adjusted accordingly. The plot is
+flipped for better readability in likert-style format.
+}
+\examples{
+#basic plot
+  matrix_mean(berlinbears, dplyr::starts_with('p_'))
+
+ #with grouping and weights
+   matrix_mean(berlinbears, dplyr::starts_with('p_'), group_by = species,
+   subgroups_to_exclude = 'panda bear', weights = weights, na.rm = TRUE )
+
+
+
 }
 \seealso{
 Other matrix questions: 

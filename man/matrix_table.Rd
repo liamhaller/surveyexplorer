@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrix.R
 \name{matrix_table}
 \alias{matrix_table}
-\title{Tabulate Array/Matrix questions}
+\title{Create a table of frequencies and counts for matrix questions}
 \usage{
 matrix_table(
   dataset,
@@ -33,10 +33,33 @@ frequencies and counts will be weighted accordingly.}
 before analysis.}
 }
 \value{
-placeholder
+A gt table summarizing percentages and counts for each response
+option in the specified multiple-choice question. If grouping is provided,
+the table includes subgroups and is formatted for clarity.
+
+@examples
+#Array question (1-5)
+matrix_table(berlinbears, dplyr::starts_with('p_'))
+
+#Use \code{group_by} to partition the question into several groups
+matrix_table(berlinbears, dplyr::starts_with('p_'), group_by = species,
+subgroups_to_exclude = 'panda bear' )
+
+#Remove NA category
+matrix_table(berlinbears, dplyr::starts_with('p_'), group_by = species,
+subgroups_to_exclude = 'panda bear', na.rm = TRUE
+
+#Categorical input
+matrix_table(berlinbears, dplyr::starts_with('c_'), group_by = is_parent)
 }
 \description{
-Tabulate Array/Matrix questions
+This function creates a table showing percentages and counts for each
+response option in a multiple-choice question, specified by \code{question}. If
+grouping is provided with \code{group_by}, the table is extended to include
+subgroups. Subgroups can be excluded, and survey weights are supported for
+adjusted counts. The table is formatted for clarity and can be displayed in
+wide format. When weights are used, counts are presented as percentages only,
+and a note is added at the bottom of the table.
 }
 \seealso{
 Other matrix questions: 

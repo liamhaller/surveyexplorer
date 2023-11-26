@@ -44,6 +44,23 @@ subgroups with 'subgroups_to_exclude,' and data weighting with the 'weights'
 parameter. Users can also choose to exclude NA values from the questions
 prior to analysis using the 'na.rm' parameter.
 }
+\examples{
+ #Array question (1-5)
+  matrix_freq(berlinbears, dplyr::starts_with('p_'))
+
+  #remove NA category
+  matrix_freq(berlinbears, dplyr::starts_with('p_'), na.rm = TRUE)
+
+  #Use `group_by` to partition the question into several groups
+  matrix_freq(berlinbears, dplyr::starts_with('p_'), group_by = species,
+  subgroups_to_exclude = c('panda bear', NA ), na.rm = TRUE)
+
+  #Categorical input
+  matrix_freq(berlinbears, dplyr::starts_with('c_'), group_by = is_parent, na.rm = TRUE)
+
+
+
+}
 \seealso{
 Other matrix questions: 
 \code{\link{matrix_likert}()},
