@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Liam", "Haller", , "haller@dezim-institut.de", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8033-6599"))
-Description: Visualize and tabulate  
+Description: Visualize and tabulate  ...
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)

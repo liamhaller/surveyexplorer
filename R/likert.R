@@ -2,18 +2,27 @@
 
 
 
-#' Quickly plot likert data (3,5,7,9 levels)
+#' Quickly plot likert data
 #'
-#' @inheritParams multichoice_summary
-#' @return example return
+#' Create a diverging stacked bar chart for Likert-scale responses using ggplot2.
+#'
+#' @inheritParams multi_summary
+#' @param labels Optional vector specifying labels for each response category. If not provided,
+#' it extracts labels from the original dataset.
+#' @param colors Optional vector specifying colors for each response category. Default colors are provided
+#' for 3 and 5 categories. If not specified, the function expects a vector of color codes.
+#'
+#' @return A ggplot2 object representing a diverging stacked bar chart displaying the distribution of
+#' Likert-scale responses. The chart is customized based on the provided or extracted labels and colors.
 #' @export
 #'
-likert_graph <- function(dataset,
+matrix_likert <- function(dataset,
                          question,
-                         na.rm = TRUE,
                          labels = NULL,
                          colors = NULL,
-                         weights = NULL){
+                         weights = NULL,
+                         na.rm = TRUE)
+                         {
 
 
 
@@ -21,19 +30,20 @@ likert_graph <- function(dataset,
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
   group_by <- NULL
   subgroups_to_exclude <-  NULL
-
-  data.table <- multichoice_summary(dataset = dataset,
+  doublemiddle_label <- Item <- value <- level <- . <- freq <- response <- NULL #created useing NSE, necessary to avoid visible binding note
+  data.table <- multi_summary(dataset = dataset,
                                     question =  all_of(question),
-                                    weights =   if(!is.null(weights)){weights})
+                                    weights =   if(!is.null(weights)){weights},
+                                    na.rm = na.rm)
 
 
 
   ### Preprocessing ###
   #Default is yes or else it would be an additional category
-  if(na.rm == TRUE){
-    data.table <- data.table %>%
-      filter(!is.na(response))
-  }
+  # if(na.rm == TRUE){
+  #   data.table <- data.table %>%
+  #     filter(!is.na(response))
+  # }
 
   #Number of categories present in the data
   no_categories <- length(unique(data.table$response))

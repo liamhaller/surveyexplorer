@@ -9,7 +9,8 @@ frequency_table(data.table, group_by)
 \arguments{
 \item{data.table}{Output from either mutli or single summary}
 
-\item{group_by}{Name of column in \code{dataset} used to partition the analysis into subgroups}
+\item{group_by}{Optional variable to group the analysis. If provided, the
+frequencies and counts will be calculated within each subgroup.}
 }
 \value{
 Gt table
