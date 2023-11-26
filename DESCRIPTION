@@ -7,7 +7,6 @@ Authors@R:
 Description: Visualize and tabulate single-choice, multiple-choice, matrix, and Likert-scale questions in survey data.
     Users can group cross-tabulations, frequency distributions, and plots by categorical variables and integrate survey 
     weights for increased flexibility. Ideal for those who seek to quickly uncover descriptive patterns dein survey datasets.
-
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
@@ -19,7 +18,6 @@ Imports:
     rlang,
     scales,
     stringr,
-    tibble,
     tidyr,
     tidyselect
 Suggests: 

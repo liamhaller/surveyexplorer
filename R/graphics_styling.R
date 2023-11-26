@@ -18,6 +18,8 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
                         y_axis_text_size = 12, legend_text_size = 12){
 
 
+  #sysfonts required to check for Calibri and add if it exists
+  rlang::check_installed("sysfonts")
 
 
     list_of_fonts <- as.data.frame(sysfonts::font_files())

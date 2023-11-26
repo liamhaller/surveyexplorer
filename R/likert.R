@@ -158,7 +158,7 @@ matrix_likert <- function(dataset,
 
   ##Create fill column for the graph (must double middle color)
   labelcenter <- labels[numcenter-1]   #subtract one since color palette dosn't include extra label column
-  doublemiddle_labels <- labels %>% tibble::as_tibble() %>%
+  doublemiddle_labels <- labels %>% dplyr::as_tibble() %>%
     #insert before since numcenter includes quesetion column
     dplyr::add_row(value = labelcenter, .before = numcenter) %>%
     dplyr::pull(1)

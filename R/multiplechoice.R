@@ -264,7 +264,7 @@ multi_freq <- function(dataset,
   if(is.null(group_by)){
   #no subgroup
     mc_upset <- data.summary %>%
-      tibble::as_tibble(rownames = "respondent") %>%
+      dplyr::as_tibble(rownames = "respondent") %>%
       tidyr::pivot_longer(-c(respondent, weights), names_to = 'question') %>%
       dplyr::filter(value != 0) %>%
       dplyr::group_by(respondent, weights) %>%
@@ -286,7 +286,7 @@ multi_freq <- function(dataset,
   } else {
   #with subgroup
     mc_upset <- data.summary %>%
-      tibble::as_tibble(rownames = "respondent") %>%
+      dplyr::as_tibble(rownames = "respondent") %>%
       tidyr::pivot_longer(-c(respondent, !!group_by, weights) , names_to = 'question') %>%
       dplyr::filter(value != 0) %>%
       dplyr::group_by(respondent, !!group_by, weights) %>%
