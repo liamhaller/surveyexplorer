@@ -2,7 +2,7 @@
 % Please edit documentation in R/likert.R
 \name{matrix_likert}
 \alias{matrix_likert}
-\title{Quickly plot likert data}
+\title{Plot Likert-scale responses using ggplot2.}
 \usage{
 matrix_likert(
   dataset,
@@ -37,5 +37,15 @@ A ggplot2 object representing a diverging stacked bar chart displaying the distr
 Likert-scale responses. The chart is customized based on the provided or extracted labels and colors.
 }
 \description{
-Create a diverging stacked bar chart for Likert-scale responses using ggplot2.
+The function produces a visually appealing diverging stacked bar chart,
+allowing for easy interpretation of the distribution of responses to a
+specific Likert-scale question. The function supports customization of
+labels, colors, and weights, providing flexibility in data representation.
 }
+\seealso{
+Other matrix questions: 
+\code{\link{matrix_freq}()},
+\code{\link{matrix_mean}()},
+\code{\link{matrix_table}()}
+}
+\concept{matrix questions}

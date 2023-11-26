@@ -2,7 +2,7 @@
 % Please edit documentation in R/matrix.R
 \name{matrix_mean}
 \alias{matrix_mean}
-\title{Title}
+\title{Matrix Mean Plot}
 \usage{
 matrix_mean(
   dataset,
@@ -33,8 +33,16 @@ frequencies and counts will be weighted accordingly.}
 before analysis.}
 }
 \value{
-placeholdder
+A ggplot object representing the mean plot.
 }
 \description{
-Title
+Visualizes the mean and standard deviation of responses to a specified question.
+If grouping is specified, the plot compares the means across different groups.
 }
+\seealso{
+Other matrix questions: 
+\code{\link{matrix_freq}()},
+\code{\link{matrix_likert}()},
+\code{\link{matrix_table}()}
+}
+\concept{matrix questions}

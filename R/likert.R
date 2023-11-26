@@ -2,9 +2,12 @@
 
 
 
-#' Quickly plot likert data
+#' Plot Likert-scale responses using ggplot2.
 #'
-#' Create a diverging stacked bar chart for Likert-scale responses using ggplot2.
+#' The function produces a visually appealing diverging stacked bar chart,
+#' allowing for easy interpretation of the distribution of responses to a
+#' specific Likert-scale question. The function supports customization of
+#' labels, colors, and weights, providing flexibility in data representation.
 #'
 #' @inheritParams multi_summary
 #' @param labels Optional vector specifying labels for each response category. If not provided,
@@ -15,6 +18,8 @@
 #' @return A ggplot2 object representing a diverging stacked bar chart displaying the distribution of
 #' Likert-scale responses. The chart is customized based on the provided or extracted labels and colors.
 #' @export
+#'
+#' @family matrix questions
 #'
 matrix_likert <- function(dataset,
                          question,

@@ -8,6 +8,10 @@
 #' @importFrom dplyr n
 #' @export
 #'
+#'
+#' @family matrix questions
+
+#'
 matrix_table <- function(dataset,
                          question,
                          group_by = NULL,
@@ -70,17 +74,20 @@ return(matrix.table)
 }
 
 
-# Matrix Graphs ------------------------------------------------------------
+# Matrix Mean plot ------------------------------------------------------------
 
 
-#' Title
+#' Matrix Mean Plot
+#'
+#' Visualizes the mean and standard deviation of responses to a specified question.
+#' If grouping is specified, the plot compares the means across different groups.
 #'
 #' @inheritParams multi_summary
-
 #'
-#' @return placeholdder
+#' @return A ggplot object representing the mean plot.
 #' @export
-#'
+#' @family matrix questions
+
 matrix_mean <- function(dataset,
                          question,
                          group_by = NULL,
@@ -165,6 +172,27 @@ return(graph.likert_mean)
 
 
 # Frequency graph ---------------------------------------------------------
+
+
+#' Matrix Frequency Plot
+#'
+#' Generate a grouped bar chart displaying the frequency distribution of
+#' responses for a categorical variable. The function supports optional
+#' subgrouping of data using the `group_by` variable, exclusion of specific
+#' subgroups with 'subgroups_to_exclude,' and data weighting with the 'weights'
+#' parameter. Users can also choose to exclude NA values from the questions
+#' prior to analysis using the 'na.rm' parameter.
+#'
+#'
+#' @inheritParams multi_summary
+
+#'
+#' @return A ggplot2 object representing a grouped bar chart displaying the frequency distribution of responses
+#' for the specified categorical variable. The chart supports grouping, weighting, and exclusion of subgroups.
+#'
+#'
+#' @export
+#' @family matrix questions
 
 
 matrix_freq <- function(dataset,
