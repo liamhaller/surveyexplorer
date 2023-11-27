@@ -37,7 +37,9 @@ test_that("Input: Tidyselect columns, subgroup", {
 })
 
 test_that("Input: Tidyselect columns, subgroup, weights", {
-  expect_no_error(multi_summary(berlinbears, question = dplyr::starts_with('will_eat'), group_by = gender, weights = weights, na.rm = FALSE))
+  expect_no_error(
+    multi_summary(berlinbears, question = dplyr::starts_with('will_eat'), group_by = gender, weights = weights, na.rm = FALSE)
+    )
 })
 
 
@@ -121,7 +123,9 @@ test_that("Table: wrong data format", {
 
 
 test_that("Table: subgroup", {
-  expect_no_error(multi_table(berlinbears, question = dplyr::starts_with('will_eat'), group_by = species))
+  expect_no_error(
+    multi_table(berlinbears, question = dplyr::starts_with('will_eat'), group_by = species)
+    )
 })
 
 test_that("Table: subgroup, weights, exclude NA", {

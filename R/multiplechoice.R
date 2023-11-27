@@ -366,7 +366,7 @@ multi_table <- function(dataset,
                               weights = NULL,
                               na.rm = FALSE){
 
-
+  question_name <-  deparse(substitute(question))
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
   contains <- response <- NULL #created useing NSE, necessary to avoid visible binding note
@@ -408,13 +408,13 @@ multi_table <- function(dataset,
 
     gt.table <- gt.table %>%
       gt::tab_header(
-        title = paste0("Question: ", question))
+        title = paste0("Question: ", question_name))
 
   } else {
 
     gt.table <- gt.table %>%
       gt::tab_header(
-        title = paste0("Question: ", question),
+        title = paste0("Question: ", question_name),
         subtitle = paste0("grouped by: ", group_by))
 
   }

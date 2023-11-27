@@ -283,7 +283,8 @@ matrix_freq <- function(dataset,
                   y = '',
                   x = "",
                   fill = "")+
-   ggplot2::theme_minimal()
+   ggplot2::theme_minimal() +
+   ggplot2::guides(fill = ggplot2::guide_legend(reverse=T))
 
 
  if(!is.null(group_by)){
