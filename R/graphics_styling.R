@@ -13,9 +13,9 @@
 #' @return No return, just a theme to add to ggplotfiles
 #' @export
 #'
-dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size = 14,
-                        y_axis_title_size = 14, x_axis_text_size = 12,
-                        y_axis_text_size = 12, legend_text_size = 12){
+dezim_style <- function(title_size = 10.5, sub_title_size = 10, x_axis_title_size = 10,
+                        y_axis_title_size = 10, x_axis_text_size = 9,
+                        y_axis_text_size = 9, legend_text_size = 9){
 
 
     #sysfonts required to check for Calibri and add if it exists
@@ -38,9 +38,11 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
       #154a39
       #4d4d4d
       #Title
-      plot.title = element_text(size = title_size, color = "#154a39",
+      plot.title = element_text(size = title_size,
+                                color = "#154a39",
                                 family = "Calibri"),
-      plot.subtitle = element_text(size = sub_title_size, color = "#154a39",
+      plot.subtitle = element_text(size = sub_title_size,
+                                   color = "#154a39",
                                    family = 'Calibri'),
       plot.caption = element_text(color = "#154a39",
                                   family = 'Calibri'),
@@ -71,7 +73,11 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
                                      colour = "#154a39"),
       axis.ticks = element_line(color = "#4d4d4d"),
       panel.grid.major=element_line(color="#D3D3D3"),
-      panel.grid.minor=element_line("#D3D3D3"))
+      panel.grid.minor=element_line("#D3D3D3")) +
+      #So that Legend is in correct order
+      guides(fill = guide_legend(reverse=T)) +
+      labs(x = "", y = "", fill = "", color = "")
+
 
 
 }
