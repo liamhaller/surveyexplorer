@@ -73,10 +73,9 @@ dezim_style <- function(title_size = 10.5, sub_title_size = 10, x_axis_title_siz
                                      colour = "#154a39"),
       axis.ticks = element_line(color = "#4d4d4d"),
       panel.grid.major=element_line(color="#D3D3D3"),
-      panel.grid.minor=element_line(color = "#D3D3D3")) +
+      panel.grid.minor=element_line(color = "#D3D3D3"))
       #So that Legend is in correct order
-      ggplot2::guides(fill = guide_legend(reverse=T)) +
-      ggplot2::labs(x = "", y = "", fill = "", color = "")
+     # ggplot2::guides(fill = guide_legend(reverse=T)) +
 
 }
 
