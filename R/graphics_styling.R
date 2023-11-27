@@ -87,7 +87,7 @@ dezim_style <- function(title_size = 10.5, sub_title_size = 9, x_axis_title_size
 #' Vector of colors for DeZIM Plots
 #'
 #' @format ## `dezim_colors`
-#' A data frame with 500 rows and 22 columns describing bears and thier prefrences:
+#' A data frame with 500 rows and 22 columns describing bears and their preferences:
 #' \describe{
 #'   \item{species}{name of species}
 #'   ...
