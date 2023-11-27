@@ -45,7 +45,8 @@ matrix_table <- function(dataset,
                          weights = NULL,
                          na.rm = FALSE){
 
-
+  #save user input for name of table
+  question_name <-  deparse(substitute(question))
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
   `Percent (count)` <- response <- freq <- NULL #created useing NSE, necessary to avoid visible binding note
@@ -80,7 +81,9 @@ matrix_table <- function(dataset,
       gt::gt(rowname_col = 'question') %>%
       gt::tab_style(
         style = gt::cell_text(align = "center"),
-        locations = gt::cells_column_labels())
+        locations = gt::cells_column_labels()) %>%
+      gt::tab_header(
+        title = paste0("Question: ", question_name))
 
   } else {
     #with grouping
@@ -91,7 +94,10 @@ matrix_table <- function(dataset,
         locations = gt::cells_column_labels()) %>%
       gt::tab_style(
           style = gt::cell_text(weight = "bold"),
-          locations = gt::cells_row_groups())
+          locations = gt::cells_row_groups()) %>%
+      gt::tab_header(
+        title = paste0("Question: ", question_name),
+        subtitle = paste0("grouped by: ", group_by))
 
 
   }

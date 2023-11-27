@@ -366,6 +366,7 @@ multi_table <- function(dataset,
                               weights = NULL,
                               na.rm = FALSE){
 
+  #save user input for name of table
   question_name <-  deparse(substitute(question))
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
