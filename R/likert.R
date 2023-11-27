@@ -197,7 +197,7 @@ matrix_likert <- function(dataset,
                   y = "",
                   fill = "")
 
-  return(graph.likert) #test change
+  return(graph.likert)
 
 }
 
