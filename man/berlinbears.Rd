@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{berlinbears}}{
 
-A data frame with 500 rows and 22 columns describing bears and thier prefrences:
+A data frame with 500 rows and 22 columns describing bears and their preferences:
 \describe{
 \item{species}{name of species}
 \item{genus}{genus that the species belongs to}

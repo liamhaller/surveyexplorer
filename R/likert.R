@@ -1,7 +1,4 @@
 
-
-
-
 #' Plot Likert-scale responses using ggplot2.
 #'
 #' The function produces a visually appealing diverging stacked bar chart,
