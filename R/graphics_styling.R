@@ -13,7 +13,7 @@
 #' @return No return, just a theme to add to ggplotfiles
 #' @export
 #'
-dezim_style <- function(title_size = 10.5, sub_title_size = 10, x_axis_title_size = 10,
+dezim_style <- function(title_size = 10.5, sub_title_size = 9, x_axis_title_size = 10,
                         y_axis_title_size = 10, x_axis_text_size = 9,
                         y_axis_text_size = 9, legend_text_size = 9){
 
@@ -32,6 +32,8 @@ dezim_style <- function(title_size = 10.5, sub_title_size = 10, x_axis_title_siz
     } else{
       stop("The Calibri font is not installed on your machine, please install it and try again")
     }
+
+
 
     ggplot2::theme(
       ### Text ###
@@ -56,6 +58,8 @@ dezim_style <- function(title_size = 10.5, sub_title_size = 10, x_axis_title_siz
                                   family = 'Calibri'),
       axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d",
                                  family = 'Calibri'),
+      axis.ticks = element_blank(),
+
 
       ### Legend ###
       legend.text= element_text(color = "#4d4d4d",
@@ -72,10 +76,9 @@ dezim_style <- function(title_size = 10.5, sub_title_size = 10, x_axis_title_siz
       plot.background = element_rect(fill = '#EAEDEC',
                                      colour = "#154a39"),
       axis.ticks = element_line(color = "#4d4d4d"),
-      panel.grid.major=element_line(color="#D3D3D3"),
-      panel.grid.minor=element_line(color = "#D3D3D3"))
-      #So that Legend is in correct order
-     # ggplot2::guides(fill = guide_legend(reverse=T)) +
+      panel.grid.major=element_line(color="#D3D3D3", linewidth = .5/2.141959),
+      panel.grid.minor=element_line(color = "#D3D3D3", linewidth = .5/2.141959))
+
 
 }
 
