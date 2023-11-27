@@ -18,8 +18,8 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
                         y_axis_text_size = 12, legend_text_size = 12){
 
 
-  #sysfonts required to check for Calibri and add if it exists
-  rlang::check_installed("sysfonts")
+    #sysfonts required to check for Calibri and add if it exists
+    rlang::check_installed("sysfonts")
 
 
     list_of_fonts <- as.data.frame(sysfonts::font_files())
@@ -38,25 +38,37 @@ dezim_style <- function(title_size = 16, sub_title_size = 14, x_axis_title_size 
       #154a39
       #4d4d4d
       #Title
-      plot.title = element_text(size = title_size, color = "#154a39", family = "Calibri"),
-      plot.subtitle = element_text(size = sub_title_size, color = "#154a39"),
-      plot.caption = element_text(color = "#154a39"),
+      plot.title = element_text(size = title_size, color = "#154a39",
+                                family = "Calibri"),
+      plot.subtitle = element_text(size = sub_title_size, color = "#154a39",
+                                   family = 'Calibri'),
+      plot.caption = element_text(color = "#154a39",
+                                  family = 'Calibri'),
 
       #Axis text
-      axis.title.x = element_text(size = x_axis_title_size, color = "#4d4d4d", family = 'Calibri'),
-      axis.text.x = element_text(size = x_axis_text_size, color = "#4d4d4d", family = 'Calibri'),
-      axis.title.y = element_text(size = y_axis_title_size, color = "#4d4d4d", family = 'Calibri'),
-      axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d", family = 'Calibri'),
+      axis.title.x = element_text(size = x_axis_title_size, color = "#4d4d4d",
+                                  family = 'Calibri'),
+      axis.text.x = element_text(size = x_axis_text_size, color = "#4d4d4d",
+                                 family = 'Calibri'),
+      axis.title.y = element_text(size = y_axis_title_size, color = "#4d4d4d",
+                                  family = 'Calibri'),
+      axis.text.y = element_text(size = y_axis_text_size, color = "#4d4d4d",
+                                 family = 'Calibri'),
 
       ### Legend ###
-      legend.text= element_text(color = "#4d4d4d", size = legend_text_size),
-      legend.title = element_text(color = "#4d4d4d"),
-      legend.background = element_rect(fill = '#EAEDEC', color = NA),
+      legend.text= element_text(color = "#4d4d4d",
+                                size = legend_text_size,
+                                family = "Calibri"),
+      legend.title = element_text(color = "#4d4d4d",
+                                  family = 'Calibri'),
+      legend.background = element_rect(fill = '#EAEDEC',
+                                       color = NA),
       legend.key = element_rect(fill = "#EAEDEC"),
       legend.position = "bottom",
 
       ### Design ###
-      plot.background = element_rect(fill = '#EAEDEC', colour = "#154a39"),
+      plot.background = element_rect(fill = '#EAEDEC',
+                                     colour = "#154a39"),
       axis.ticks = element_line(color = "#4d4d4d"),
       panel.grid.major=element_line(color="#D3D3D3"),
       panel.grid.minor=element_line("#D3D3D3"))
