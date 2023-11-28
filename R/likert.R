@@ -186,7 +186,7 @@ matrix_likert <- function(dataset,
     ggplot2::scale_y_continuous(breaks=seq(lower_bound ,upper_bound,25),
                                 limits=c(lower_bound,upper_bound),
                                 labels = abs(seq(lower_bound, upper_bound, 25))) +
-    ggplot2::scale_x_discrete(labels = function(x) strwrap(x, width = 40)) +
+    ggplot2::scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 40)) +
     ggplot2::coord_flip() +
     ggplot2::labs(title = "",
                   subtitle = "",

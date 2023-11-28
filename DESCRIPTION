@@ -17,6 +17,7 @@ Imports:
     purrr,
     rlang,
     scales,
+    stringr,
     tidyr,
     tidyselect
 Suggests: 
