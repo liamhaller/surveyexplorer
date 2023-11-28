@@ -4,9 +4,9 @@ Version: 0.1.0
 Authors@R: 
     person("Liam", "Haller", , "haller@dezim-institut.de", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8033-6599"))
-Description: Visualize and tabulate single-choice, multiple-choice, matrix, and Likert-scale questions in survey data.
+Description: Visualize and tabulate single-choice, multiple-choice, matrix-style questions in survey data.
     Users can group cross-tabulations, frequency distributions, and plots by categorical variables and integrate survey 
-    weights for increased flexibility. Ideal for quickly uncovering descriptive patterns in survey datasets.
+    weights for complex designs. Ideal for quickly uncovering descriptive patterns in survey datasets.
 License: MIT + file LICENSE
 Depends: 
     R (>= 2.10)
@@ -17,7 +17,6 @@ Imports:
     purrr,
     rlang,
     scales,
-    stringr,
     tidyr,
     tidyselect
 Suggests: 
