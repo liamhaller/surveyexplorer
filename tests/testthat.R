@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(dezim)
+library(surveyexplorer)
 
-test_check("dezim")
+test_check("surveyexplorer")
