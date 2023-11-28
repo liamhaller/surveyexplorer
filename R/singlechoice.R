@@ -217,7 +217,7 @@ single_freq <- function(dataset,
       ggplot2::geom_text(position = ggplot2::position_dodge(width = .9),    # move to center of bars
                 vjust = -0.5,    # nudge above top of bar
                 size = 3) +
-      ggplot2::scale_x_discrete(labels = function(x) strwrap(x, width = 10)) +
+      ggplot2::scale_x_discrete(labels = function(x) stringr::str_wrap(x, width = 10)) +
       ggplot2::scale_y_continuous(labels = scales::percent, limits = c(0,1)) +
       ggplot2::theme_minimal()
 
