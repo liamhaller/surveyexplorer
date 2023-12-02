@@ -278,7 +278,7 @@ matrix_freq <- function(dataset,
 
  graph.freq <-  ggplot2::ggplot(data.table, aes(x= question, y = freq,
                                   fill = response,
-                                  label = scales::percent(freq))) +
+                                  label = scales::percent(freq, accuracy = .001))) +
     ggplot2::geom_bar(stat = 'identity' ) +
     ggplot2::geom_text(position = ggplot2::position_fill(vjust = .5),
                        check_overlap = TRUE,
