@@ -126,7 +126,7 @@ single_freq(berlinbears,
 
 ### Multiple-choice questions
 
-The options and syntax for multiple-choice tables `multi_table` and graphs `multi_graphs` are the same. The only difference is the question input also accommodates tidyselect syntax to sekect several columns for each answer option. For example, the question "will_eat" has five answer options each prefixed by "will_eat"
+The options and syntax for multiple-choice tables `multi_table` and graphs `multi_graphs` are the same. The only difference is the question input also accommodates tidyselect syntax to select several columns for each answer option. For example, the question "will_eat" has five answer options each prefixed by "will_eat"
 
 ```{r}
 berlinbears |> 
@@ -273,7 +273,7 @@ For matrix-style questions with numerical input, `matrix_mean` plots the mean va
 Each function contains the following options
 
 -   dataset ---The input dataframe (or tibble) of survey questions
--   question --- The column(s) that contain the response options for a question, can be selected by using tidyselect semanatics or providing a vector of column names or numbers
+-   question --- The column(s) that contain the response options for a question, can be selected by using tidyselect semantics or providing a vector of column names or numbers
 -   group_by --- Optional variable to group the analysis. If provided, the frequencies and counts will be calculated within each subgroup
 -   subgroups_to_exclude --- Optional vector specifying subgroups to exclude from the analysis
 -   weights --- Optional variable containing survey weights. If provided, frequencies and counts will be weighted accordingly

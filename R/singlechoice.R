@@ -241,7 +241,7 @@ single_freq <- function(dataset,
 
 
 
-#' Base table for single & multipe choice questions
+#' Base table for single & multiple choice questions
 #'
 #' @param data.table Output from either mutli or single summary
 #' @inheritParams single_summary
