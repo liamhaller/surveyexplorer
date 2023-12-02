@@ -34,10 +34,15 @@ The data used in the following examples is from the `berlinbears` dataset, a fic
 
 ### Single-choice questions
 
-```{r}
+```{r, eval= FALSE}
 #Basic table
 single_table(berlinbears, 
              question = income)
+```
+
+```{r, echo=FALSE}
+single_table(berlinbears, 
+             question = income) |> gt::as_raw_html()
 ```
 
 Use `group_by =` to partition the question into several groups
@@ -54,7 +59,7 @@ Ignore unwanted subgroups with `subgroups_to_exclude`
 single_table(berlinbears,
              question = income, 
              group_by = gender, 
-             subgroups_to_exclude = NA)
+             subgroups_to_exclude = NA) |> gt::as_raw_html()
 ```
 
 Remove NAs from the question variable with `na.rm`
