@@ -47,15 +47,28 @@ single_table(berlinbears,
 
 Use `group_by =` to partition the question into several groups
 
-```{r}
+```{r, eval =FALSE}
 single_table(berlinbears,
              question = income,
              group_by = gender)
 ```
 
+```{r, echo=FALSE}
+single_table(berlinbears,
+             question = income,
+             group_by = gender) |> gt::as_raw_html()
+```
+
 Ignore unwanted subgroups with `subgroups_to_exclude`
 
-```{r}
+```{r, eval=FALSE}
+single_table(berlinbears,
+             question = income, 
+             group_by = gender, 
+             subgroups_to_exclude = NA) 
+```
+
+```{r, echo=FALSE}
 single_table(berlinbears,
              question = income, 
              group_by = gender, 
@@ -64,7 +77,7 @@ single_table(berlinbears,
 
 Remove NAs from the question variable with `na.rm`
 
-```{r}
+```{r, eval=FALSE}
 single_table(berlinbears,
              question = income, 
              group_by = gender, 
@@ -72,15 +85,32 @@ single_table(berlinbears,
              na.rm = TRUE)
 ```
 
+```{r, echo=FALSE}
+single_table(berlinbears,
+             question = income, 
+             group_by = gender, 
+             subgroups_to_exclude = NA,
+             na.rm = TRUE)  |> gt::as_raw_html()
+```
+
 Finally, you can specify survey weights using the weight option
 
-```{r}
+```{r, eval=FALSE}
 single_table(berlinbears,
              question = income, 
              group_by = gender, 
              subgroups_to_exclude = NA,
              na.rm = TRUE,
              weights = weights)
+```
+
+```{r, echo=FALSE}
+single_table(berlinbears,
+             question = income, 
+             group_by = gender, 
+             subgroups_to_exclude = NA,
+             na.rm = TRUE,
+             weights = weights) |> gt::as_raw_html()
 ```
 
 The same syntax applies to the `single_freq` function to plot frequencies of the question optionally partitioned by subgroups.
@@ -106,12 +136,20 @@ berlinbears |>
 
 The same syntax can be used to select the question for the multiple choice tables and graphs
 
-```{r, results='hold'}
+```{r, eval=FALSE}
 multi_table(berlinbears, 
             question = dplyr::starts_with('will_eat'), 
             group_by = genus, 
             subgroups_to_exclude = NA,
             na.rm = TRUE)
+```
+
+```{r, echo=FALSE}
+multi_table(berlinbears, 
+            question = dplyr::starts_with('will_eat'), 
+            group_by = genus, 
+            subgroups_to_exclude = NA,
+            na.rm = TRUE) |> gt::as_raw_html()
 ```
 
 For graphing, the `multi_freq` function creates an UpSet plot to visualize the frequencies of the intersecting sets for each answer combination and also includes the ability to specify weights.
@@ -138,13 +176,22 @@ multi_freq(berlinbears,
 
 `matrix_table` has the same syntax as above and works with array or categorical questions
 
-```{r}
+```{r, eval=FALSE}
 matrix_table(berlinbears, 
              dplyr::starts_with('p_'),
              group_by = is_parent)
 matrix_table(berlinbears, 
              dplyr::starts_with('c_'),
              group_by = is_parent)
+```
+
+```{r, echo=FALSE}
+matrix_table(berlinbears, 
+             dplyr::starts_with('p_'),
+             group_by = is_parent) |> gt::as_raw_html()
+matrix_table(berlinbears, 
+             dplyr::starts_with('c_'),
+             group_by = is_parent) |> gt::as_raw_html()
 ```
 
 `matrix_freq` visualizes the frequencies of responses
