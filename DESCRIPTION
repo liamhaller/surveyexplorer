@@ -13,6 +13,7 @@ Depends:
 Imports:
     dplyr,
     ggplot2,
+    ggupset,
     gt,
     purrr,
     rlang,
@@ -21,7 +22,6 @@ Imports:
     tidyr,
     tidyselect
 Suggests: 
-    ggupset,
     knitr,
     rmarkdown,
     spelling,

@@ -177,9 +177,6 @@ multi_freq <- function(dataset,
                               weights = NULL,
                               na.rm = FALSE){
 
-  #ggupset required to make graph, but only used in this function
-  rlang::check_installed("ggupset")
-
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
   value <- count <- respondent <- NULL #created useing NSE, necessary to avoid visible binding note
