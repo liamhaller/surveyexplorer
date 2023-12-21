@@ -113,7 +113,7 @@ single_table(berlinbears,
              weights = weights) |> gt::as_raw_html()
 ```
 
-The same syntax applies to the `single_freq` function to plot frequencies of the question optionally partitioned by subgroups.
+The same syntax can be applied to the `single_freq` function to plot frequencies of the question optionally partitioned by subgroups.
 
 ```{r, fig.width=10}
 single_freq(berlinbears,

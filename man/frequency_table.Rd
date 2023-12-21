@@ -2,7 +2,7 @@
 % Please edit documentation in R/singlechoice.R
 \name{frequency_table}
 \alias{frequency_table}
-\title{Base table for single & multipe choice questions}
+\title{Base table for single & multiple choice questions}
 \usage{
 frequency_table(data.table, group_by)
 }
@@ -16,5 +16,5 @@ frequencies and counts will be calculated within each subgroup.}
 Gt table
 }
 \description{
-Base table for single & multipe choice questions
+Base table for single & multiple choice questions
 }

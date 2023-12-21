@@ -2,7 +2,7 @@ Package: surveyexplorer
 Title: Quickly Explore Complex Survey Data
 Version: 0.1.0
 Authors@R: 
-    person("Liam", "Haller", , "haller@dezim-institut.de", role = c("aut", "cre", "cph"),
+    person("Liam", "Haller", , "liamhllr2@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8033-6599"))
 Description: Visualize and tabulate single-choice, multiple-choice, matrix-style questions from survey data. 
     Includes ability to group cross-tabulations, frequency distributions, and plots by categorical variables and 
