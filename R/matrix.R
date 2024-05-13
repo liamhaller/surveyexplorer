@@ -11,6 +11,7 @@
 #' and a note is added at the bottom of the table.
 #'
 #' @inheritParams multi_summary
+#' @param column_order reorder columns of final table with an argument to pass to `dplyr::relocate()`
 #'
 #' @return  A gt table summarizing percentages and counts for each response
 #'   option in the specified multiple-choice question. If grouping is provided,
@@ -43,7 +44,8 @@ matrix_table <- function(dataset,
                          group_by = NULL,
                          subgroups_to_exclude = NULL,
                          weights = NULL,
-                         na.rm = FALSE){
+                         na.rm = FALSE,
+                         column_order = NULL){
 
   #save user input for name of table
   question_name <-  deparse(substitute(question))
@@ -73,10 +75,12 @@ matrix_table <- function(dataset,
   #Wide format for GT
   data.table <- data.table %>%
     tidyr::pivot_wider(names_from=c(response),
-                       values_from=c(`Percent (count)`))
+                       values_from=c(`Percent (count)`)) %>%
+    #0.2.0 add option to specify column order
+    dplyr::relocate({{column_order}})
 
   if(is.null(group_by)){
-    #No groupipng
+    #without grouping
     matrix.table <- data.table %>%
       gt::gt(rowname_col = 'question') %>%
       gt::tab_style(
@@ -267,7 +271,7 @@ matrix_freq <- function(dataset,
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
-  response <- freq <- NULL #created useing NSE, necessary to avoid visible binding note
+  response <- freq <- NULL #created using NSE, necessary to avoid visible binding note
   data.table <- multi_summary(dataset = dataset,
                                     question =  all_of(question),
                                     group_by =   if(!is.null(group_by)){group_by},
@@ -275,11 +279,12 @@ matrix_freq <- function(dataset,
                                     weights =   if(!is.null(weights)){weights},
                                     na.rm = na.rm)
 
+print(data.table)
 
  graph.freq <-  ggplot2::ggplot(data.table, aes(x= question, y = freq,
                                   fill = response,
-                                  label = scales::percent(freq, accuracy = .001))) +
-    ggplot2::geom_bar(stat = 'identity' ) +
+                                  label = scales::percent(freq, accuracy = .1))) +
+    ggplot2::geom_bar(stat = 'identity') +
     ggplot2::geom_text(position = ggplot2::position_fill(vjust = .5),
                        check_overlap = TRUE,
                        size = 3.3) +

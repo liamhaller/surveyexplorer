@@ -4,6 +4,14 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+## Surveyexplorer
+
+<!-- badges: start -->
+
+[![CRAN status](https://www.r-pkg.org/badges/version/surveyexplorer)](https://CRAN.R-project.org/package=surveyexplorer)
+
+<!-- badges: end -->
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -13,15 +21,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Surveyexplorer
-
 Visualize and tabulate single-choice, multiple-choice, matrix-style questions from survey data. Includes ability to group cross-tabulations, frequency distributions, and plots by categorical variables and to integrate survey weights. Ideal for quickly uncovering descriptive patterns in survey data.
 
 ## Installation
 
 ```{r eval=FALSE}
 # install.packages("devtools"), if not already downloaded
-devtools::install_github("liamhaller/surveyexplorer")
+install.packages("surveyexplorer")
 ```
 
 # Examples
@@ -178,17 +184,11 @@ multi_freq(berlinbears,
 
 ```{r, eval=FALSE}
 matrix_table(berlinbears, 
-             dplyr::starts_with('p_'),
-             group_by = is_parent)
-matrix_table(berlinbears, 
              dplyr::starts_with('c_'),
              group_by = is_parent)
 ```
 
 ```{r, echo=FALSE}
-matrix_table(berlinbears, 
-             dplyr::starts_with('p_'),
-             group_by = is_parent) |> gt::as_raw_html()
 matrix_table(berlinbears, 
              dplyr::starts_with('c_'),
              group_by = is_parent) |> gt::as_raw_html()

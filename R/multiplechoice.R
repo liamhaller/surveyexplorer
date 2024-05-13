@@ -391,9 +391,9 @@ multi_table <- function(dataset,
   #only include 'selected' counts
   data.table <- data.table %>%
     dplyr::filter(response != 0) %>%
-    dplyr::select(-response)
-
-
+    dplyr::select(-response) %>%
+    #0.2.0 Add default arrange
+    dplyr::arrange(desc(freq), .by_group = ifelse(is.null(group_by), FALSE, TRUE))
 
   #create base of table
   gt.table <- frequency_table(data.table = data.table,

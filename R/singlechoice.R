@@ -252,9 +252,9 @@ single_freq <- function(dataset,
 frequency_table <- function(data.table, group_by){
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
-  . <- freq <- question <- everything <-  NULL #created useing NSE, necessary to avoid visible binding note
+  . <- freq <- question <- everything <-  NULL #created using NSE, necessary to avoid visible binding note
 
-  #No subgroup
+  #without subgroup
   if(is.null(group_by)){
 
     gt.table <-  data.table %>%
@@ -265,10 +265,11 @@ frequency_table <- function(data.table, group_by){
       gt::cols_label(ends_with('_freq') ~ 'Frequency',
                      ends_with('_n') ~ 'Count') %>%
       gt::grand_summary_rows(columns = dplyr::matches('n'),
-                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
-      gt::grand_summary_rows(columns = dplyr::matches('freq'),
-                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
-      gt::fmt_percent(columns = dplyr::contains('freq'), decimals = 2)
+                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum"))
+    #0.2.0 Remove grand_sumary row for non-grouped data
+      #gt::grand_summary_rows(columns = dplyr::matches('freq'),
+      #                       fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
+      #gt::fmt_percent(columns = dplyr::contains('freq'), decimals = 2)
 
 
     #with subgroup
@@ -302,7 +303,6 @@ frequency_table <- function(data.table, group_by){
       ) %>%
       dplyr::select(sort(names(.))) %>%
       dplyr::mutate(question = "Columnwise Total", .before = everything())
-
 
     gt.table <- gt.table %>%
       dplyr::add_row(columnwise_total) %>%

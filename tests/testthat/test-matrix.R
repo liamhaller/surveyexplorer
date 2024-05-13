@@ -60,6 +60,14 @@ test_that("Matrix table: Categorical input, group_by", {
   )
 })
 
+test_that("Matrix table: order columns + na.rm", {
+  expect_no_error(
+    matrix_table(berlinbears, dplyr::starts_with('c_'), group_by = is_parent, na.rm = TRUE, column_order = c(low, medium, high))
+  )
+})
+
+
+
 
 
 # Matrix graph ------------------------------------------------------------
