@@ -26,8 +26,8 @@ Visualize and tabulate single-choice, multiple-choice, matrix-style questions fr
 ## Installation
 
 ```{r eval=FALSE}
-# install.packages("devtools"), if not already downloaded
 install.packages("surveyexplorer")
+# or devtools::install_github("liamhaller/surveyexplorer") for the devlopment version 
 ```
 
 # Examples
@@ -276,3 +276,4 @@ Each function contains the following options
 -   subgroups_to_exclude --- Optional vector specifying subgroups to exclude from the analysis
 -   weights --- Optional variable containing survey weights. If provided, frequencies and counts will be weighted accordingly
 -   na.rm --- Logical indicating whether to remove NA values from question before analysis
+
