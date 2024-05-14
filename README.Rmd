@@ -194,6 +194,14 @@ matrix_table(berlinbears,
              group_by = is_parent) |> gt::as_raw_html()
 ```
 
+`matrix_freq` visualizes the frequencies of responses
+
+```{r}
+matrix_freq(berlinbears, 
+             dplyr::starts_with('p_'), 
+             na.rm = TRUE)
+```
+
 For array/matrix style questions that are numeric `matrix_mean` plots the mean values and confidence intervals
 
 ```{r}

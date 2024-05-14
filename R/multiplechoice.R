@@ -18,7 +18,13 @@
 #'
 #' @family multiple-choice questions
 #'
-multi_summary <- function(dataset, question, group_by = NULL, subgroups_to_exclude = NULL, weights = NULL, na.rm){
+multi_summary <- function(dataset,
+                          question,
+                          response_order = NULL,
+                          group_by = NULL,
+                          subgroups_to_exclude = NULL,
+                          weights = NULL,
+                          na.rm = FALSE){
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
@@ -107,8 +113,6 @@ multi_summary <- function(dataset, question, group_by = NULL, subgroups_to_exclu
         dplyr::ungroup()
       colnames(data.summary) <- c('question', 'response', 'n', 'freq')
 
-
-
     } else {
       #subgroup specified
       data.summary <- data.summary %>%
@@ -121,6 +125,7 @@ multi_summary <- function(dataset, question, group_by = NULL, subgroups_to_exclu
       colnames(data.summary) <- c('question', 'group_by', 'response', 'n', 'freq')
 
     }
+
 
     return(data.summary)
 
@@ -367,7 +372,7 @@ multi_table <- function(dataset,
   question_name <-  deparse(substitute(question))
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
-  contains <- response <- NULL #created useing NSE, necessary to avoid visible binding note
+  contains <- response <- freq <- NULL #created useing NSE, necessary to avoid visible binding note
 
   data.table <- multi_summary(dataset = dataset,
                                     question =  all_of(question),
@@ -393,7 +398,7 @@ multi_table <- function(dataset,
     dplyr::filter(response != 0) %>%
     dplyr::select(-response) %>%
     #0.2.0 Add default arrange
-    dplyr::arrange(desc(freq), .by_group = ifelse(is.null(group_by), FALSE, TRUE))
+    dplyr::arrange(dplyr::desc(freq), .by_group = ifelse(is.null(group_by), FALSE, TRUE))
 
   #create base of table
   gt.table <- frequency_table(data.table = data.table,

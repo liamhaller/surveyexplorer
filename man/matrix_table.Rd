@@ -10,7 +10,8 @@ matrix_table(
   group_by = NULL,
   subgroups_to_exclude = NULL,
   weights = NULL,
-  na.rm = FALSE
+  na.rm = FALSE,
+  column_order = NULL
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ frequencies and counts will be weighted accordingly.}
 
 \item{na.rm}{Logical indicating whether to remove NA values from \code{question}
 before analysis.}
+
+\item{column_order}{reorder columns of final table with an argument to pass to \code{dplyr::relocate()}}
 }
 \value{
 A gt table summarizing percentages and counts for each response

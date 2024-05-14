@@ -237,8 +237,12 @@ return(graph.likert_mean)
 #'
 #'
 #' @inheritParams multi_summary
+#' @param colors Optional vector specifying colors for each response category.
+#' @param response_order An optional vector specifying the order of factor levels for the response categories.
+#' This parameter is particularly useful for ensuring that the response categories are presented in a specific, meaningful order when plotting.
+#' For instance, in surveys or questionnaires where responses range from strongly disagree to strongly agree, setting response_order allows the categories to be
+#' displayed in this logical sequence rather than an alphabetical or random order.
 
-#'
 #' @return A ggplot2 object representing a grouped bar chart displaying the frequency distribution of responses
 #' for the specified categorical variable. The chart supports grouping, weighting, and exclusion of subgroups.
 #' @examples
@@ -263,10 +267,12 @@ return(graph.likert_mean)
 
 matrix_freq <- function(dataset,
                              question,
+                             response_order = NULL,
                              group_by = NULL,
                              subgroups_to_exclude = NULL,
                              weights = NULL,
-                             na.rm = FALSE){
+                             na.rm = FALSE,
+                             colors = NULL){
 
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
@@ -279,23 +285,49 @@ matrix_freq <- function(dataset,
                                     weights =   if(!is.null(weights)){weights},
                                     na.rm = na.rm)
 
-print(data.table)
+  #Create a new column for the labels (0.2.0)
+  #NA for labels that are  < 10%
+  data.table$freq.label <- ifelse(data.table$freq > .1,
+                                  yes = data.table$freq, no = NA_integer_)
 
+
+  if(!is.null(response_order)){
+    data.table <- data.table %>% dplyr::mutate(response = factor(response,
+                                                                     levels = response_order,
+                                                                     ordered = TRUE))
+  }
+
+  #Build plot
  graph.freq <-  ggplot2::ggplot(data.table, aes(x= question, y = freq,
                                   fill = response,
                                   label = scales::percent(freq, accuracy = .1))) +
     ggplot2::geom_bar(stat = 'identity') +
-    ggplot2::geom_text(position = ggplot2::position_fill(vjust = .5),
-                       check_overlap = TRUE,
-                       size = 3.3) +
     ggplot2::coord_flip() +
+    ggplot2::scale_y_continuous(labels = scales::percent) +
+
+   ##Text
+   #0.2.0 add new labeling
+   ggplot2::geom_label(
+     aes(label = scales::percent(freq.label, decimal.mark = '.', suffix = "", label.padding = .05, accuracy = .1),
+          group = response), colour = "black", size = 2.8, fill = 'white',
+     label.padding=ggplot2::unit(.1, "lines"), position = ggplot2::position_stack(.5), na.rm = TRUE) +
+
+    # ggplot2::geom_text(position = ggplot2::position_fill(vjust = .5),
+    #                    check_overlap = TRUE,
+    #                    size = 3.3) +
     ggplot2::labs(subtitle = "",
                   title = "",
                   y = '',
                   x = "",
-                  fill = "")+
+                  fill = "") +
+   # Theme & color
    ggplot2::theme_minimal() +
-   ggplot2::guides(fill = ggplot2::guide_legend(reverse=T))
+   ggplot2::guides(fill = ggplot2::guide_legend(reverse=TRUE,
+                                                nrow = 1,
+                                                position = 'bottom' )) +
+   #ggplot2::theme(legend.position = 'bottom') +
+   if(is.null(colors)){ggplot2::scale_fill_brewer(palette = "RdYlBu", type = "qual")}
+ else {ggplot2::scale_fill_manual(values = colors)}
 
 
  if(!is.null(group_by)){

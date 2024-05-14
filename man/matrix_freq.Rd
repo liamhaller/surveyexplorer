@@ -7,10 +7,12 @@
 matrix_freq(
   dataset,
   question,
+  response_order = NULL,
   group_by = NULL,
   subgroups_to_exclude = NULL,
   weights = NULL,
-  na.rm = FALSE
+  na.rm = FALSE,
+  colors = NULL
 )
 }
 \arguments{
@@ -19,6 +21,11 @@ matrix_freq(
 \item{question}{The columns that contain each of the response options for a
 question, can be selected by using \strong{tidyselect} semanatics or providing a
 vector of column names or numbers}
+
+\item{response_order}{An optional vector specifying the order of factor levels for the response categories.
+This parameter is particularly useful for ensuring that the response categories are presented in a specific, meaningful order when plotting.
+For instance, in surveys or questionnaires where responses range from strongly disagree to strongly agree, setting response_order allows the categories to be
+displayed in this logical sequence rather than an alphabetical or random order.}
 
 \item{group_by}{Optional variable to group the analysis. If provided, the
 frequencies and counts will be calculated within each subgroup.}
@@ -31,6 +38,8 @@ frequencies and counts will be weighted accordingly.}
 
 \item{na.rm}{Logical indicating whether to remove NA values from \code{question}
 before analysis.}
+
+\item{colors}{Optional vector specifying colors for each response category.}
 }
 \value{
 A ggplot2 object representing a grouped bar chart displaying the frequency distribution of responses

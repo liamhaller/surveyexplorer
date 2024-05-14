@@ -130,15 +130,16 @@ test_that("Matrix freq: Group by, weights", {
   )
 })
 
-
-
-
-
-
-
-
-
-
+test_that("Matrix freq: Order and colors", {
+  expect_no_error(
+    matrix_freq(berlinbears,
+                dplyr::starts_with('p_'),
+                response_order = c(3,2,4,5,1),
+                colors = c("#E1AA28", "#1E5F46", "#7E8F75", "#EFCD83", "#E17832"),
+                na.rm = TRUE
+    )
+  )
+})
 
 
 

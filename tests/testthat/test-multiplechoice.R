@@ -5,6 +5,8 @@
 
 
 
+
+
 test_that("Input: Columns only", {
   expect_no_error(
     multi_summary(berlinbears, question = 2:3, na.rm = FALSE)
@@ -119,7 +121,6 @@ test_that("Table: wrong data format", {
     multi_table(berlinbears, question = dplyr::starts_with('c_'))
   )
 })
-
 
 
 test_that("Table: subgroup", {
