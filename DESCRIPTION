@@ -1,6 +1,6 @@
 Package: surveyexplorer
 Title: Quickly Explore Complex Survey Data
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person("Liam", "Haller", email = "liamhllr2@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-8033-6599"))
