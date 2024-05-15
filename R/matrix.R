@@ -150,7 +150,7 @@ matrix_mean <- function(dataset,
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
-  se <- sd <- response <- freq <- NULL #created useing NSE, necessary to avoid visible binding note
+  se <- sd <- response <- freq <- unweighted_n <- NULL #created useing NSE, necessary to avoid visible binding note
 
   data.table <- multi_summary(dataset = dataset,
                                     question =  all_of(question),
@@ -311,7 +311,7 @@ matrix_freq <- function(dataset,
 
   try(group_by <- rlang::ensym(group_by), silent = TRUE) # try function is here since if is null, then it will fail
   try(weights <- rlang::ensym(weights), silent = TRUE) # try function is here since if is null, then it will fail
-  response <- freq <- NULL #created using NSE, necessary to avoid visible binding note
+  response <- freq <- freq.label <- NULL #created using NSE, necessary to avoid visible binding note
   data.table <- multi_summary(dataset = dataset,
                                     question =  all_of(question),
                                     group_by =   if(!is.null(group_by)){group_by},

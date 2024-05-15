@@ -7,7 +7,6 @@
 multi_summary(
   dataset,
   question,
-  response_order = NULL,
   group_by = NULL,
   subgroups_to_exclude = NULL,
   weights = NULL,
