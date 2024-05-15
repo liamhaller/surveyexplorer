@@ -208,37 +208,23 @@ For array/matrix style questions that are numeric `matrix_mean` plots the mean v
 matrix_mean(berlinbears, 
              question = dplyr::starts_with('p_'),
              na.rm = TRUE)
-#Can also apply grouping
+#Can also apply grouping + survey weights
 matrix_mean(berlinbears, 
             question = dplyr::starts_with('p_'),
             na.rm = TRUE,
             group_by = species, 
             subgroups_to_exclude = NA)
-#with survey weights
-matrix_mean(berlinbears, 
-            question = dplyr::starts_with('p_'),
-            na.rm = TRUE,
-            group_by = species, 
-            subgroups_to_exclude = NA, 
-            weights = weights)
 ```
 
 Finally, for Likert questions (scales of 3,5,7,9...) `matrix_likert` provides a custom plot
 
 ```{r}
-matrix_likert(berlinbears, 
-              question = dplyr::starts_with('p_'))
 #you can specify custom labels with the `label` argument
 matrix_likert(berlinbears,
               question = dplyr::starts_with('p_'),
               labels = c('Strongly disagree', 'Disagree','Neutral','Agree','Strongly agree'))
 
-#and pass colors using the colors option 
-matrix_likert(berlinbears, 
-              question = dplyr::starts_with('p_'),
-              labels = c('Strongly disagree', 'Disagree','Neutral','Agree','Strongly agree'),
-              colors = c("#E1AA28", "#1E5F46", "#7E8F75", "#EFCD83", "#E17832"))
-#can also apply weights 
+#can also apply pass custom colors and specify weights weights 
 matrix_likert(berlinbears, 
               question = dplyr::starts_with('p_'),
               labels = c('Strongly disagree', 'Disagree','Neutral','Agree','Strongly agree'), 
@@ -276,4 +262,3 @@ Each function contains the following options
 -   subgroups_to_exclude --- Optional vector specifying subgroups to exclude from the analysis
 -   weights --- Optional variable containing survey weights. If provided, frequencies and counts will be weighted accordingly
 -   na.rm --- Logical indicating whether to remove NA values from question before analysis
-

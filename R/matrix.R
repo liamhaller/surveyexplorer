@@ -160,23 +160,40 @@ matrix_mean <- function(dataset,
                                     na.rm = na.rm) %>%
     dplyr::select(-freq)
 
+
   data.table$response <-  as.numeric(data.table$response)
   data.table$n <-  as.numeric(data.table$n)
   if(!is.null(weights)){
     data.table$n <- round(data.table$n,0)
-  }
+      }
 
 
 if(is.null(group_by)){
-  #no subgroups
+  #Plot without subgroups
+
+  #Get unweighted number of observations for each group
+  # when data is weighted the n changes because of tidyr::uncount(n), so
+  # n must be added seperatly to calculate standard errors
+  #this is how n is calculated regardless of whether weights are specified
+  data.unweighted_n <-multi_summary(dataset = dataset,
+                                    question =  all_of(question),
+                                    group_by =   if(!is.null(group_by)){group_by},
+                                    subgroups_to_exclude =  subgroups_to_exclude,
+                                    na.rm = na.rm) %>%
+    dplyr::select(question, n) %>%
+    dplyr::group_by(question) %>%
+    dplyr::summarise(unweighted_n = sum(n))
+
+  #Calculate mean and standard error
   data.table <- data.table %>%
     dplyr::group_by(question) %>%
     tidyr::uncount(n) %>%
     dplyr::summarise(
       mean = mean(response),
-      sd = stats::sd(response),
-      n = n(),
-      se = sd / sqrt(n()))
+      sd = stats::sd(response)) %>%
+    # add (unweighted) number of observations to summary
+    dplyr::left_join(data.unweighted_n, by = 'question') %>%
+    dplyr::mutate(se = sd / sqrt(unweighted_n))
 
   graph.likert_mean <- ggplot(data.table, aes(x= factor(question), y=mean)) +
     ggplot2::geom_point(size = 2) +
@@ -192,14 +209,31 @@ if(is.null(group_by)){
 
   } else{
 
+  #Plot when groups are specified
+
+    #Get unweighted number of observations for each group
+    # when data is weighted the n changes because of tidyr::uncount(n), so
+    # n must be added seperatly to calculate standard errors
+    #this is how n is calculated regardless of whether weights are specified
+    data.unweighted_n <-multi_summary(dataset = dataset,
+                                      question =  all_of(question),
+                                      group_by =   if(!is.null(group_by)){group_by},
+                                      subgroups_to_exclude =  subgroups_to_exclude,
+                                      na.rm = na.rm) %>%
+      dplyr::select(question, group_by, n) %>%
+      dplyr::group_by(question, group_by) %>%
+      dplyr::summarise(unweighted_n = sum(n))
+
+  #Calculate mean and standard error
   data.table <- data.table %>%
     dplyr::group_by(question, group_by) %>%
     tidyr::uncount(n) %>%
     dplyr::summarise(
       mean = mean(response),
-      sd = sd(response),
-      n = n(),
-      se = sd / sqrt(n()))
+      sd = sd(response)) %>%
+    # add (unweighted) number of observations to summary
+    dplyr::left_join(data.unweighted_n, by = c('question', 'group_by')) %>%
+    dplyr::mutate(se = sd / sqrt(unweighted_n))
 
   graph.likert_mean <- ggplot(data.table, aes(x= factor(question), y=mean, color = group_by)) +
     ggplot2::geom_point(size = 2, position = ggplot2::position_dodge(width=0.5)) +
