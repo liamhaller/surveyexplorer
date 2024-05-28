@@ -1,6 +1,6 @@
 # surveyexplorer 0.2.0
 
--   Add ability to specify response/column for matrix_freq and matrix_table functions
+-   Add ability to specify response/column for `matrix_freq` and `matrix_table` functions
 
 For example:
 
@@ -13,9 +13,9 @@ For example:
     )
 ```
 
--   Added labels to matrix_freq graph and updated default colors
--   Bug fix in matrix_mean that caused standard errors to be underestimated for weighted data
--   Set default order for multi_table results to be shown from high to low and removed frequency summary row for non-grouped data since it sums to \> 1
+-   Updated deafult labels in `matrix_freq` graph to improve readability
+-   Bug fix in `matrix_mean` that caused standard errors to be underestimated for weighted data
+-   Set default order for `multi_table` results to be shown from high to low and removed frequency summary row for non-grouped data since it sums to \> 1
 
 # surveyexplorer 0.1.0
 
