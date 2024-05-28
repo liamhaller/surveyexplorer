@@ -265,11 +265,10 @@ frequency_table <- function(data.table, group_by){
       gt::cols_label(ends_with('_freq') ~ 'Frequency',
                      ends_with('_n') ~ 'Count') %>%
       gt::grand_summary_rows(columns = dplyr::matches('n'),
-                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum"))
-    #0.2.0 Remove grand_sumary row for non-grouped data
-      #gt::grand_summary_rows(columns = dplyr::matches('freq'),
-      #                       fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
-      #gt::fmt_percent(columns = dplyr::contains('freq'), decimals = 2)
+                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum")) %>%
+      gt::fmt_percent(columns = dplyr::contains('freq'), decimals = 2)
+
+
 
 
     #with subgroup
@@ -409,7 +408,9 @@ single_table <- function(dataset,
 
     gt.table <- gt.table %>%
       gt::tab_header(
-        title = paste0("Question: ", question))
+        title = paste0("Question: ", question)) %>%
+      gt::grand_summary_rows(columns = dplyr::matches('freq'),
+                             fns =  list(label = md('**Column Total**'), id = "totals", fn = "sum"))
 
   } else {
 
