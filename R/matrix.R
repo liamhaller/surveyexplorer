@@ -369,13 +369,7 @@ matrix_freq <- function(dataset,
      ggplot2::facet_wrap(~group_by, scales = "fixed", ncol = 2)
 
  }
-
-
-
-
  return(graph.freq)
-
-
 }
 
 
